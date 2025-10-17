@@ -74,19 +74,19 @@
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 2rem;
+            padding: 1rem 2rem;
             position: relative;
             z-index: 2;
         }
 
         .logo {
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
             animation: fadeInDown 1s ease-out;
         }
 
         .logo img {
-            width: 280px;
+            width: 200px;
             height: auto;
             filter: drop-shadow(0 4px 20px rgba(196, 165, 217, 0.3));
         }
@@ -110,17 +110,18 @@
         .hero {
             text-align: center;
             animation: fadeIn 1.2s ease-out;
+            margin-bottom: 1rem;
         }
 
         .phase-badge {
             display: inline-block;
             background: linear-gradient(135deg, #8b5cf6 0%, #c084fc 100%);
-            padding: 0.6rem 1.75rem;
+            padding: 0.5rem 1.5rem;
             border-radius: 50px;
             font-weight: 700;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             letter-spacing: 1px;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             animation: pulse 2s ease-in-out infinite;
             box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
         }
@@ -143,22 +144,22 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 1.5rem;
+            margin-bottom: 0.75rem;
             line-height: 1.2;
         }
 
         .subtitle {
-            font-size: clamp(1.1rem, 2vw, 1.5rem);
+            font-size: clamp(1rem, 2vw, 1.3rem);
             color: #c4a5d9;
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
             font-weight: 500;
         }
 
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin: 2rem 0;
+            gap: 1rem;
+            margin: 2rem 0 1.5rem 0;
         }
 
         .stat-card {
@@ -166,7 +167,7 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(196, 165, 217, 0.2);
             border-radius: 20px;
-            padding: 1.5rem;
+            padding: 1.25rem;
             text-align: center;
             transition: all 0.3s ease;
             animation: fadeInUp 1s ease-out backwards;
@@ -193,17 +194,17 @@
         }
 
         .stat-number {
-            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-size: clamp(2.25rem, 4vw, 3.25rem);
             font-weight: 900;
             background: linear-gradient(135deg, #8b5cf6 0%, #c084fc 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.4rem;
         }
 
         .stat-label {
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: #c4a5d9;
             font-weight: 600;
         }
@@ -213,8 +214,8 @@
             background: linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(236, 72, 153, 0.2) 100%);
             border: 3px solid rgba(139, 92, 246, 0.4);
             border-radius: 30px;
-            padding: 2.5rem;
-            margin: 2rem 0;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
             position: relative;
             overflow: hidden;
             animation: fadeInUp 1s ease-out backwards;
@@ -241,12 +242,12 @@
         .migration-badge {
             display: inline-block;
             background: linear-gradient(135deg, #ef4444 0%, #f59e0b 100%);
-            padding: 0.6rem 1.5rem;
+            padding: 0.5rem 1.25rem;
             border-radius: 50px;
             font-weight: 700;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             letter-spacing: 1px;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             box-shadow: 0 4px 20px rgba(239, 68, 68, 0.4);
             animation: pulse 2s ease-in-out infinite;
             text-align: center;
@@ -255,7 +256,7 @@
         .migration-grid {
             display: grid;
             grid-template-columns: 1fr auto 1fr;
-            gap: 1.5rem;
+            gap: 1rem;
             align-items: center;
             position: relative;
             z-index: 1;
@@ -301,10 +302,10 @@
 
         .sbt-card img {
             width: 100%;
-            max-width: 800px;
+            max-width: 550px;
             height: auto;
             border-radius: 16px;
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             cursor: pointer;
             transition: all 0.3s ease;
@@ -347,30 +348,30 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 1.5rem;
+            gap: 1rem;
             padding: 0 1rem;
         }
 
         .migration-header {
             text-align: center;
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
         }
 
         .migration-header h3 {
-            font-size: 1.9rem;
+            font-size: 1.6rem;
             font-weight: 800;
             background: linear-gradient(135deg, #fff 0%, #ec4899 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.5rem;
             line-height: 1.2;
         }
 
         .migration-header p {
-            font-size: 1.05rem;
+            font-size: 0.95rem;
             color: #e9d5ff;
-            line-height: 1.6;
+            line-height: 1.5;
             max-width: 500px;
             margin: 0 auto;
         }
@@ -379,15 +380,15 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            margin: 1rem 0;
+            margin: 0.5rem 0;
             position: relative;
-            height: 80px;
+            height: 60px;
         }
 
         .arrow-flow {
             position: relative;
-            width: 200px;
-            height: 80px;
+            width: 150px;
+            height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -395,8 +396,8 @@
 
         .arrow-flow svg {
             position: absolute;
-            width: 100px;
-            height: 100px;
+            width: 80px;
+            height: 80px;
             filter: drop-shadow(0 0 15px rgba(236, 72, 153, 0.6));
         }
 
@@ -512,13 +513,13 @@
             display: inline-flex;
             align-items: center;
             gap: 0.75rem;
-            padding: 1.5rem 3.5rem;
+            padding: 1.25rem 3rem;
             background: linear-gradient(135deg, #ec4899 0%, #f59e0b 100%);
             color: #fff;
             text-decoration: none;
             border-radius: 20px;
             font-weight: 800;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             transition: all 0.3s ease;
             border: none;
             cursor: pointer;
@@ -577,17 +578,17 @@
             gap: 0.5rem;
             background: rgba(245, 158, 11, 0.2);
             border: 2px solid #f59e0b;
-            padding: 0.5rem 1rem;
+            padding: 0.4rem 0.9rem;
             border-radius: 50px;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             font-weight: 600;
             color: #fbbf24;
-            margin-top: 1rem;
+            margin-top: 0.5rem;
         }
 
         .final-step-badge svg {
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
         }
 
         /* Coming Soon Section - 2 Column Layout */
@@ -1031,7 +1032,7 @@
             }
 
             .sbt-card img {
-                max-width: 600px;
+                max-width: 400px;
             }
 
             .btn-migrate {
@@ -1303,18 +1304,6 @@
             <div class="phase-badge">PHASE 1 COMPLETE ✓</div>
             <h1>Youmio Chain Testnet</h1>
             <p class="subtitle">A milestone achieved by our incredible community</p>
-
-            <!-- Stats -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-number">5M+</div>
-                    <div class="stat-label">Total Transactions</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">140K</div>
-                    <div class="stat-label">Users</div>
-                </div>
-            </div>
         </div>
 
         <!-- Migration Section -->
@@ -1411,6 +1400,18 @@
                     <div class="label">Upgrade To</div>
                     <div class="network">Mainnet</div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">5M+</div>
+                <div class="stat-label">Total Transactions</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">140K</div>
+                <div class="stat-label">Users</div>
             </div>
         </div>
 
