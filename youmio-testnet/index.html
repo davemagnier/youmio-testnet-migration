@@ -301,7 +301,7 @@
 
         .sbt-card img {
             width: 100%;
-            max-width: 350px;
+            max-width: 450px;
             height: auto;
             border-radius: 16px;
             margin-bottom: 1rem;
@@ -498,6 +498,11 @@
                 opacity: 0;
                 transform: scale(0);
             }
+        }
+
+        @keyframes slideRight {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(10px); }
         }
 
         .migration-content {
@@ -1031,7 +1036,7 @@
             }
 
             .sbt-card img {
-                max-width: 280px;
+                max-width: 350px;
             }
 
             .btn-migrate {
@@ -1095,7 +1100,7 @@
             }
 
             .sbt-card img {
-                max-width: 220px;
+                max-width: 280px;
             }
 
             .arrow-flow {
@@ -1235,7 +1240,7 @@
             }
 
             .sbt-card img {
-                max-width: 200px;
+                max-width: 240px;
             }
 
             .sbt-card::after {
@@ -1295,7 +1300,7 @@
     <div class="container">
         <!-- Logo -->
         <div class="logo">
-            <img src="images/youmio-logo.png" alt="Youmio">
+            <img src="youmio-logo.png" alt="Youmio">
         </div>
 
         <!-- Hero Section -->
@@ -1325,7 +1330,7 @@
             
             <div class="migration-grid">
                 <div class="sbt-card testnet">
-                    <img src="images/testnet-sbt.png" alt="Youmio Testnet SBT" onclick="openImageModal('images/testnet-sbt.png', 'Youmio Testnet SBT')">
+                    <img src="testnet-sbt.png" alt="Youmio Testnet SBT" onclick="openImageModal('testnet-sbt.png', 'Youmio Testnet SBT')">
                     <div class="label">Current</div>
                     <div class="network">Testnet</div>
                 </div>
@@ -1338,6 +1343,7 @@
                     
                     <div class="arrow-container">
                         <div class="arrow-flow">
+                            <!-- Arrow 1 -->
                             <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                                 <defs>
                                     <linearGradient id="arrowGradient1" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -1352,6 +1358,7 @@
                                       stroke-linecap="round" 
                                       stroke-linejoin="round"/>
                             </svg>
+                            <!-- Arrow 2 -->
                             <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                                 <defs>
                                     <linearGradient id="arrowGradient2" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -1366,6 +1373,7 @@
                                       stroke-linecap="round" 
                                       stroke-linejoin="round"/>
                             </svg>
+                            <!-- Arrow 3 -->
                             <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                                 <defs>
                                     <linearGradient id="arrowGradient3" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -1380,6 +1388,7 @@
                                       stroke-linecap="round" 
                                       stroke-linejoin="round"/>
                             </svg>
+                            <!-- Particle effects -->
                             <div class="arrow-particles">
                                 <div class="arrow-particle"></div>
                                 <div class="arrow-particle"></div>
@@ -1407,14 +1416,14 @@
                 </div>
 
                 <div class="sbt-card mainnet">
-                    <img src="images/mainnet-sbt.png" alt="Youmio Mainnet SBT" onclick="openImageModal('images/mainnet-sbt.png', 'Youmio Mainnet SBT')">
+                    <img src="mainnet-sbt.png" alt="Youmio Mainnet SBT" onclick="openImageModal('mainnet-sbt.png', 'Youmio Mainnet SBT')">
                     <div class="label">Upgrade To</div>
                     <div class="network">Mainnet</div>
                 </div>
             </div>
         </div>
 
-        <!-- Coming Soon Section -->
+        <!-- Coming Soon Section - 2 Column Layout -->
         <div class="coming-soon-section">
             <!-- Studio Card -->
             <div class="coming-soon-card studio-card">
@@ -1438,7 +1447,7 @@
             <div class="coming-soon-card wearable-card">
                 <div class="wearable-badge-top">TESTNET EXCLUSIVE</div>
                 <div class="blurred-wearable-container">
-                    <img src="images/wearable-bonus-blurred.png" alt="Tester Bonus" class="blurred-wearable">
+                    <img src="wearable-bonus-blurred.png" alt="Tester Bonus" class="blurred-wearable">
                     <div class="overlay-text">
                         <div class="overlay-title">Additional Tester Bonus</div>
                         <div class="overlay-subtitle">Unlocking Soon</div>
@@ -1471,8 +1480,8 @@
         <div class="modal-content">
             <button class="modal-close" onclick="closeStarsModal()">×</button>
             <h2 class="modal-title">How Stars Work</h2>
-            <img src="images/stars-infographic.png" 
-                 alt="Stars Infographic" 
+            <img src="stars-infographic.png" 
+                 alt="Stars Infographic showing Earn Stars, Grow Affinity, Launchpad Utility, and Ecosystem Rewards" 
                  class="infographic-image" />
         </div>
     </div>
@@ -1487,6 +1496,7 @@
     </div>
 
     <script>
+        // Modal functions
         function openStarsModal() {
             document.getElementById('starsModal').classList.add('active');
         }
@@ -1495,6 +1505,7 @@
             document.getElementById('starsModal').classList.remove('active');
         }
 
+        // Image Modal functions
         function openImageModal(imageSrc, imageLabel) {
             const modal = document.getElementById('imageModal');
             const modalImage = document.getElementById('modalImage');
@@ -1510,6 +1521,7 @@
             document.getElementById('imageModal').classList.remove('active');
         }
 
+        // Close modals on background click
         document.querySelectorAll('.modal, .image-modal').forEach(modal => {
             modal.addEventListener('click', function(e) {
                 if (e.target === this) {
@@ -1518,6 +1530,7 @@
             });
         });
 
+        // Close modals on Escape key
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 document.querySelectorAll('.modal, .image-modal').forEach(modal => {
@@ -1526,6 +1539,7 @@
             }
         });
 
+        // Create sparkles
         function createSparkle() {
             const sparkle = document.createElement('div');
             sparkle.className = 'sparkle';
@@ -1540,8 +1554,10 @@
             }, 5000);
         }
 
+        // Create sparkles periodically
         setInterval(createSparkle, 800);
         
+        // Create initial batch of sparkles
         for (let i = 0; i < 15; i++) {
             setTimeout(createSparkle, i * 100);
         }
