@@ -1,0 +1,1550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Youmio Chain Testnet - Phase 1 Complete</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://api.fontshare.com/v2/css?f[]=ambit@400,700,800,900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Ambit', 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0015 0%, #1a0d2e 50%, #2d1b4e 100%);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .sparkle {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            background: radial-gradient(circle, #fff 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: sparkleFloat 5s ease-in-out infinite;
+            opacity: 0;
+            z-index: 1;
+        }
+
+        @keyframes sparkleFloat {
+            0%, 100% { 
+                opacity: 0;
+                transform: translateY(0) scale(0);
+            }
+            10% {
+                opacity: 1;
+                transform: translateY(-20px) scale(1);
+            }
+            90% {
+                opacity: 1;
+                transform: translateY(-80px) scale(1);
+            }
+        }
+
+        @keyframes gradientShift {
+            0%, 100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #0a0015 0%, #1a0d2e 25%, #2d1b4e 50%, #1a0d2e 75%, #0a0015 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .logo img {
+            width: 280px;
+            height: auto;
+            filter: drop-shadow(0 4px 20px rgba(196, 165, 217, 0.3));
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .hero {
+            text-align: center;
+            animation: fadeIn 1.2s ease-out;
+        }
+
+        .phase-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #8b5cf6 0%, #c084fc 100%);
+            padding: 0.6rem 1.75rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+            animation: pulse 2s ease-in-out infinite;
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 8px 30px rgba(139, 92, 246, 0.6);
+            }
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, #fff 0%, #c4a5d9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-size: clamp(1.1rem, 2vw, 1.5rem);
+            color: #c4a5d9;
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: rgba(139, 92, 246, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(196, 165, 217, 0.2);
+            border-radius: 20px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            animation: fadeInUp 1s ease-out backwards;
+        }
+
+        .stat-card:nth-child(1) { animation-delay: 0.2s; }
+        .stat-card:nth-child(2) { animation-delay: 0.4s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(196, 165, 217, 0.5);
+            box-shadow: 0 10px 40px rgba(139, 92, 246, 0.3);
+        }
+
+        .stat-number {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, #8b5cf6 0%, #c084fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            color: #c4a5d9;
+            font-weight: 600;
+        }
+
+        /* Migration Section */
+        .migration-section {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(236, 72, 153, 0.2) 100%);
+            border: 3px solid rgba(139, 92, 246, 0.4);
+            border-radius: 30px;
+            padding: 3rem;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 1s ease-out backwards;
+            animation-delay: 0.6s;
+        }
+
+        .migration-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+            opacity: 0.5;
+            animation: pulseGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        .migration-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ef4444 0%, #f59e0b 100%);
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 20px rgba(239, 68, 68, 0.4);
+            animation: pulse 2s ease-in-out infinite;
+            text-align: center;
+        }
+
+        .migration-grid {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 2.5rem;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .sbt-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .sbt-card::after {
+            content: '🔍';
+            position: absolute;
+            top: 2.5rem;
+            right: 2.5rem;
+            background: rgba(0, 0, 0, 0.7);
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            font-size: 1rem;
+        }
+
+        .sbt-card:hover::after {
+            opacity: 1;
+        }
+
+        .sbt-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(139, 92, 246, 0.3);
+        }
+
+        .sbt-card img {
+            width: 100%;
+            max-width: 350px;
+            height: auto;
+            border-radius: 16px;
+            margin-bottom: 1rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .sbt-card img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 40px rgba(139, 92, 246, 0.5);
+        }
+
+        .sbt-card .label {
+            font-size: 0.9rem;
+            color: #c4a5d9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .sbt-card .network {
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-top: 0.5rem;
+        }
+
+        .sbt-card.testnet .network {
+            background: linear-gradient(135deg, #8b5cf6 0%, #c084fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .sbt-card.mainnet .network {
+            background: linear-gradient(135deg, #ec4899 0%, #f472b6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .migration-center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 0 2rem;
+        }
+
+        .migration-header {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .migration-header h3 {
+            font-size: 1.9rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.75rem;
+            line-height: 1.2;
+        }
+
+        .migration-header p {
+            font-size: 1.05rem;
+            color: #e9d5ff;
+            line-height: 1.6;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .arrow-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 1rem 0;
+            position: relative;
+            height: 80px;
+        }
+
+        .arrow-flow {
+            position: relative;
+            width: 200px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .arrow-flow svg {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            filter: drop-shadow(0 0 15px rgba(236, 72, 153, 0.6));
+        }
+
+        .arrow-flow svg:nth-child(1) {
+            animation: arrowFlow1 2s ease-in-out infinite;
+            opacity: 0.3;
+        }
+
+        .arrow-flow svg:nth-child(2) {
+            animation: arrowFlow2 2s ease-in-out infinite;
+            opacity: 0.5;
+            animation-delay: 0.3s;
+        }
+
+        .arrow-flow svg:nth-child(3) {
+            animation: arrowFlow3 2s ease-in-out infinite;
+            opacity: 1;
+            animation-delay: 0.6s;
+        }
+
+        @keyframes arrowFlow1 {
+            0% {
+                transform: translateX(-40px) scale(0.8);
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateX(40px) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        @keyframes arrowFlow2 {
+            0% {
+                transform: translateX(-30px) scale(0.9);
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateX(30px) scale(1.1);
+                opacity: 0;
+            }
+        }
+
+        @keyframes arrowFlow3 {
+            0% {
+                transform: translateX(-20px) scale(1);
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(20px) scale(1);
+                opacity: 0;
+            }
+        }
+
+        .arrow-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .arrow-particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            border-radius: 50%;
+            animation: particleFlow 3s ease-in-out infinite;
+        }
+
+        .arrow-particle:nth-child(1) { top: 20%; animation-delay: 0s; }
+        .arrow-particle:nth-child(2) { top: 40%; animation-delay: 0.5s; }
+        .arrow-particle:nth-child(3) { top: 60%; animation-delay: 1s; }
+        .arrow-particle:nth-child(4) { top: 80%; animation-delay: 1.5s; }
+
+        @keyframes particleFlow {
+            0% {
+                left: 0%;
+                opacity: 0;
+                transform: scale(0);
+            }
+            20% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            80% {
+                opacity: 1;
+            }
+            100% {
+                left: 100%;
+                opacity: 0;
+                transform: scale(0);
+            }
+        }
+
+        .migration-content {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .btn-migrate {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1.5rem 3.5rem;
+            background: linear-gradient(135deg, #ec4899 0%, #f59e0b 100%);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 8px 40px rgba(236, 72, 153, 0.6);
+            animation: pulseMigrate 2s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-migrate::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-migrate:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .btn-migrate:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 50px rgba(236, 72, 153, 0.8);
+        }
+
+        @keyframes pulseMigrate {
+            0%, 100% {
+                box-shadow: 0 8px 40px rgba(236, 72, 153, 0.6);
+            }
+            50% {
+                box-shadow: 0 8px 50px rgba(236, 72, 153, 0.9), 0 0 30px rgba(245, 158, 11, 0.5);
+            }
+        }
+
+        .btn-migrate svg {
+            width: 24px;
+            height: 24px;
+            animation: arrowBounce 1s ease-in-out infinite;
+        }
+
+        @keyframes arrowBounce {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(5px); }
+        }
+
+        .final-step-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(245, 158, 11, 0.2);
+            border: 2px solid #f59e0b;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #fbbf24;
+            margin-top: 1rem;
+        }
+
+        .final-step-badge svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Coming Soon Section - 2 Column Layout */
+        .coming-soon-section {
+            display: grid;
+            grid-template-columns: 1.3fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+            animation: fadeInUp 1s ease-out backwards;
+            animation-delay: 0.8s;
+        }
+
+        .coming-soon-card {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(192, 132, 252, 0.15) 100%);
+            border: 2px solid rgba(196, 165, 217, 0.3);
+            border-radius: 24px;
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(20px);
+        }
+
+        /* Studio Card */
+        .studio-card {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .coming-soon-content {
+            text-align: center;
+        }
+
+        .coming-soon-content h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff 0%, #c4a5d9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .coming-soon-content .subtitle-text {
+            font-size: 1.1rem;
+            color: #c4a5d9;
+            margin-bottom: 1rem;
+        }
+
+        .coming-soon-content p {
+            font-size: 1.05rem;
+            color: #e9d5ff;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .star-box {
+            background: rgba(139, 92, 246, 0.2);
+            border: 2px solid rgba(196, 165, 217, 0.4);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            align-self: flex-start;
+        }
+
+        .star-box svg {
+            width: 45px;
+            height: 45px;
+            margin-bottom: 0.75rem;
+            filter: drop-shadow(0 2px 8px rgba(255, 255, 255, 0.3));
+        }
+
+        .star-box .label {
+            font-size: 0.8rem;
+            color: #c4a5d9;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .star-box .amount {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffffff 0%, #f0e7ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+            margin-bottom: 0.5rem;
+        }
+
+        .star-box .pack {
+            font-size: 0.95rem;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        /* Wearable Bonus Card */
+        .wearable-card {
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.12) 0%, rgba(244, 114, 182, 0.12) 100%);
+            border: 2px solid rgba(244, 114, 182, 0.25);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1.5rem;
+        }
+
+        .wearable-badge-top {
+            background: linear-gradient(135deg, #ec4899 0%, #f472b6 100%);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
+        }
+
+        .blurred-wearable-container {
+            position: relative;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .blurred-wearable {
+            width: 100%;
+            height: auto;
+            border-radius: 20px;
+            filter: blur(8px);
+            opacity: 0.6;
+        }
+
+        .overlay-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            width: 90%;
+            padding: 2rem;
+            background: rgba(10, 0, 21, 0.85);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(236, 72, 153, 0.4);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .overlay-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ec4899 0%, #f472b6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+        }
+
+        .overlay-subtitle {
+            font-size: 1.1rem;
+            color: #c4a5d9;
+            font-weight: 600;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 1.2rem 3rem;
+            background: linear-gradient(135deg, #8b5cf6 0%, #c084fc 100%);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 15px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(139, 92, 246, 0.6);
+        }
+
+        .btn-secondary {
+            background: rgba(139, 92, 246, 0.2);
+            border: 2px solid rgba(196, 165, 217, 0.5);
+            box-shadow: none;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(139, 92, 246, 0.3);
+            border-color: rgba(196, 165, 217, 0.8);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1a0d2e 0%, #2d1b4e 100%);
+            border: 2px solid rgba(196, 165, 217, 0.3);
+            border-radius: 30px;
+            padding: 3rem;
+            max-width: 900px;
+            width: 95%;
+            position: relative;
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .modal-title {
+            font-size: 2rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #fff 0%, #c4a5d9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .infographic-image {
+            width: 100%;
+            height: auto;
+            border-radius: 20px;
+            margin-top: 1rem;
+        }
+
+        /* Image Modal */
+        .image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+            padding: 2rem;
+        }
+
+        .image-modal.active {
+            display: flex;
+        }
+
+        .image-modal-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90vh;
+            animation: zoomIn 0.4s ease;
+        }
+
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .image-modal-content img {
+            width: 100%;
+            height: auto;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+        }
+
+        .image-modal-close {
+            position: absolute;
+            top: -50px;
+            right: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+            font-size: 1.5rem;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-weight: 300;
+        }
+
+        .image-modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .image-modal-label {
+            position: absolute;
+            bottom: -45px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Social Section */
+        .social-section {
+            text-align: center;
+            margin: 2rem 0 1rem 0;
+        }
+
+        .social-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+        }
+
+        .btn-discord {
+            background: linear-gradient(135deg, #5865F2 0%, #7289da 100%);
+            box-shadow: 0 4px 20px rgba(88, 101, 242, 0.4);
+        }
+
+        .btn-discord:hover {
+            box-shadow: 0 8px 30px rgba(88, 101, 242, 0.6);
+        }
+
+        .btn-x {
+            background: linear-gradient(135deg, #000 0%, #333 100%);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .btn-x:hover {
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+        }
+
+        .btn svg {
+            vertical-align: middle;
+            margin-right: 0.5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .migration-section {
+                padding: 2rem;
+            }
+
+            .migration-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .arrow-container {
+                transform: rotate(90deg);
+                margin: 2rem 0;
+            }
+
+            .arrow-flow {
+                width: 150px;
+                height: 60px;
+            }
+
+            .arrow-flow svg {
+                width: 80px;
+                height: 80px;
+            }
+
+            .migration-center {
+                padding: 0;
+            }
+
+            .migration-header h3 {
+                font-size: 1.6rem;
+            }
+
+            .migration-header p {
+                font-size: 0.95rem;
+            }
+
+            .sbt-card img {
+                max-width: 280px;
+            }
+
+            .btn-migrate {
+                padding: 1.25rem 2.5rem;
+                font-size: 1.1rem;
+            }
+
+            .coming-soon-section {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 1.25rem;
+            }
+
+            .container {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 1.5rem 1.25rem;
+            }
+
+            .logo img {
+                width: 200px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .migration-section {
+                padding: 1.5rem;
+            }
+
+            .migration-badge {
+                font-size: 0.75rem;
+                padding: 0.5rem 1rem;
+            }
+
+            .migration-header h3 {
+                font-size: 1.5rem;
+            }
+
+            .migration-header p {
+                font-size: 0.9rem;
+            }
+
+            .btn-migrate {
+                padding: 1rem 2rem;
+                font-size: 1rem;
+            }
+
+            .sbt-card img {
+                max-width: 220px;
+            }
+
+            .arrow-flow {
+                width: 120px;
+                height: 50px;
+            }
+
+            .arrow-flow svg {
+                width: 60px;
+                height: 60px;
+            }
+
+            .final-step-badge {
+                font-size: 0.75rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            .coming-soon-card {
+                padding: 1.5rem;
+            }
+
+            .coming-soon-content h2 {
+                font-size: 1.6rem;
+            }
+
+            .coming-soon-content .subtitle-text {
+                font-size: 1rem;
+            }
+
+            .coming-soon-content p {
+                font-size: 0.95rem;
+            }
+
+            .star-box {
+                padding: 1.25rem;
+            }
+
+            .star-box svg {
+                width: 38px;
+                height: 38px;
+            }
+
+            .star-box .amount {
+                font-size: 1.5rem;
+            }
+
+            .overlay-title {
+                font-size: 1.2rem;
+            }
+
+            .overlay-subtitle {
+                font-size: 0.95rem;
+            }
+
+            .btn {
+                padding: 1rem 2rem;
+                font-size: 1rem;
+            }
+
+            .modal-content {
+                padding: 2rem 1.5rem;
+            }
+
+            .stat-card {
+                padding: 1.25rem;
+            }
+
+            .social-buttons {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .btn-discord,
+            .btn-x {
+                width: 100%;
+            }
+
+            .image-modal {
+                padding: 1rem;
+            }
+
+            .image-modal-close {
+                top: -40px;
+                width: 40px;
+                height: 40px;
+                font-size: 1.3rem;
+            }
+
+            .image-modal-label {
+                font-size: 1rem;
+                bottom: -35px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .container {
+                padding: 1.25rem 1rem;
+            }
+
+            .logo img {
+                width: 180px;
+            }
+
+            h1 {
+                font-size: 1.75rem;
+            }
+
+            .phase-badge {
+                font-size: 0.75rem;
+                padding: 0.5rem 1.25rem;
+            }
+
+            .migration-section {
+                padding: 1.25rem;
+            }
+
+            .migration-badge {
+                font-size: 0.7rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            .migration-header h3 {
+                font-size: 1.3rem;
+            }
+
+            .migration-header p {
+                font-size: 0.85rem;
+            }
+
+            .btn-migrate {
+                padding: 0.9rem 1.5rem;
+                font-size: 0.95rem;
+            }
+
+            .sbt-card {
+                padding: 1rem;
+            }
+
+            .sbt-card img {
+                max-width: 200px;
+            }
+
+            .sbt-card::after {
+                top: 1.25rem;
+                right: 1.25rem;
+                width: 26px;
+                height: 26px;
+                font-size: 0.8rem;
+            }
+
+            .arrow-flow {
+                width: 100px;
+                height: 50px;
+            }
+
+            .arrow-flow svg {
+                width: 50px;
+                height: 50px;
+            }
+
+            .coming-soon-card {
+                padding: 1.25rem;
+            }
+
+            .coming-soon-content h2 {
+                font-size: 1.4rem;
+            }
+
+            .star-box {
+                padding: 1rem;
+            }
+
+            .star-box svg {
+                width: 34px;
+                height: 34px;
+            }
+
+            .star-box .amount {
+                font-size: 1.4rem;
+            }
+
+            .overlay-title {
+                font-size: 1rem;
+            }
+
+            .overlay-subtitle {
+                font-size: 0.85rem;
+            }
+
+            .overlay-text {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Logo -->
+        <div class="logo">
+            <img src="images/youmio-logo.png" alt="Youmio">
+        </div>
+
+        <!-- Hero Section -->
+        <div class="hero">
+            <div class="phase-badge">PHASE 1 COMPLETE ✓</div>
+            <h1>Youmio Chain Testnet</h1>
+            <p class="subtitle">A milestone achieved by our incredible community</p>
+
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">5M+</div>
+                    <div class="stat-label">Total Transactions</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">140K</div>
+                    <div class="stat-label">Users</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Migration Section -->
+        <div class="migration-section">
+            <div style="text-align: center;">
+                <div class="migration-badge">⚡ ACTION REQUIRED - FINAL STEP ⚡</div>
+            </div>
+            
+            <div class="migration-grid">
+                <div class="sbt-card testnet">
+                    <img src="images/testnet-sbt.png" alt="Youmio Testnet SBT" onclick="openImageModal('images/testnet-sbt.png', 'Youmio Testnet SBT')">
+                    <div class="label">Current</div>
+                    <div class="network">Testnet</div>
+                </div>
+
+                <div class="migration-center">
+                    <div class="migration-header">
+                        <h3>Complete Your Testnet Journey</h3>
+                        <p>Migrate your testnet participation badge to mainnet now and secure your position for maximum opportunities.</p>
+                    </div>
+                    
+                    <div class="arrow-container">
+                        <div class="arrow-flow">
+                            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <linearGradient id="arrowGradient1" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
+                                    </linearGradient>
+                                </defs>
+                                <path d="M 20 50 L 65 50 M 55 35 L 70 50 L 55 65" 
+                                      stroke="url(#arrowGradient1)" 
+                                      stroke-width="6" 
+                                      fill="none" 
+                                      stroke-linecap="round" 
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <linearGradient id="arrowGradient2" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
+                                    </linearGradient>
+                                </defs>
+                                <path d="M 20 50 L 65 50 M 55 35 L 70 50 L 55 65" 
+                                      stroke="url(#arrowGradient2)" 
+                                      stroke-width="6" 
+                                      fill="none" 
+                                      stroke-linecap="round" 
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <linearGradient id="arrowGradient3" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
+                                    </linearGradient>
+                                </defs>
+                                <path d="M 20 50 L 65 50 M 55 35 L 70 50 L 55 65" 
+                                      stroke="url(#arrowGradient3)" 
+                                      stroke-width="6" 
+                                      fill="none" 
+                                      stroke-linecap="round" 
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <div class="arrow-particles">
+                                <div class="arrow-particle"></div>
+                                <div class="arrow-particle"></div>
+                                <div class="arrow-particle"></div>
+                                <div class="arrow-particle"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="migration-content">
+                        <button class="btn-migrate" onclick="window.open('https://opensea.io/collection/youmio-opensea', '_blank')">
+                            <span style="position: relative; z-index: 1;">Migrate Testnet Badge to Mainnet</span>
+                            <svg style="position: relative; z-index: 1;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </button>
+                        
+                        <div class="final-step-badge">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                            </svg>
+                            Final Step to Maximize Opportunities
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sbt-card mainnet">
+                    <img src="images/mainnet-sbt.png" alt="Youmio Mainnet SBT" onclick="openImageModal('images/mainnet-sbt.png', 'Youmio Mainnet SBT')">
+                    <div class="label">Upgrade To</div>
+                    <div class="network">Mainnet</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Coming Soon Section -->
+        <div class="coming-soon-section">
+            <!-- Studio Card -->
+            <div class="coming-soon-card studio-card">
+                <div class="coming-soon-content">
+                    <h2>Youmio Studio Coming Soon</h2>
+                    <p class="subtitle-text">The AI Character Creator</p>
+                    <p>Your participation on Youmio Studio will be key to unlocking maximum future ecosystem rewards & to give you an early advantage we are gifting a pack of stars to each wallet that used this testnet.</p>
+                    <button class="btn btn-secondary" onclick="openStarsModal()">How do Stars work?</button>
+                </div>
+                <div class="star-box">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M 45 10 L 52 32 L 75 32 L 57 45 L 64 67 L 45 54 L 26 67 L 33 45 L 15 32 L 38 32 Z" fill="#ffffff"/>
+                        <path d="M 75 15 L 79 25 L 90 25 L 81 32 L 85 42 L 75 35 L 65 42 L 69 32 L 60 25 L 71 25 Z" fill="#ffffff"/>
+                    </svg>
+                    <div class="label">Each Tester Receives</div>
+                    <div class="amount">1 × TESTER STAR PACK</div>
+                </div>
+            </div>
+
+            <!-- Wearable Bonus Card -->
+            <div class="coming-soon-card wearable-card">
+                <div class="wearable-badge-top">TESTNET EXCLUSIVE</div>
+                <div class="blurred-wearable-container">
+                    <img src="images/wearable-bonus-blurred.png" alt="Tester Bonus" class="blurred-wearable">
+                    <div class="overlay-text">
+                        <div class="overlay-title">Additional Tester Bonus</div>
+                        <div class="overlay-subtitle">Unlocking Soon</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Social Section -->
+        <div class="social-section">
+            <div class="social-buttons">
+                <a href="https://discord.com/invite/youmio" class="btn btn-discord" target="_blank" rel="noopener noreferrer">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.865-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0 a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z" fill="currentColor"/>
+                    </svg>
+                    Join us on Discord
+                </a>
+                <a href="https://x.com/youmio_ai" class="btn btn-x" target="_blank" rel="noopener noreferrer">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" fill="currentColor"/>
+                    </svg>
+                    Follow us on X
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stars Info Modal -->
+    <div id="starsModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeStarsModal()">×</button>
+            <h2 class="modal-title">How Stars Work</h2>
+            <img src="images/stars-infographic.png" 
+                 alt="Stars Infographic" 
+                 class="infographic-image" />
+        </div>
+    </div>
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="image-modal">
+        <div class="image-modal-content">
+            <button class="image-modal-close" onclick="closeImageModal()">×</button>
+            <img id="modalImage" src="" alt="">
+            <div id="modalLabel" class="image-modal-label"></div>
+        </div>
+    </div>
+
+    <script>
+        function openStarsModal() {
+            document.getElementById('starsModal').classList.add('active');
+        }
+
+        function closeStarsModal() {
+            document.getElementById('starsModal').classList.remove('active');
+        }
+
+        function openImageModal(imageSrc, imageLabel) {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const modalLabel = document.getElementById('modalLabel');
+            
+            modalImage.src = imageSrc;
+            modalImage.alt = imageLabel;
+            modalLabel.textContent = imageLabel;
+            modal.classList.add('active');
+        }
+
+        function closeImageModal() {
+            document.getElementById('imageModal').classList.remove('active');
+        }
+
+        document.querySelectorAll('.modal, .image-modal').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
+                }
+            });
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal, .image-modal').forEach(modal => {
+                    modal.classList.remove('active');
+                });
+            }
+        });
+
+        function createSparkle() {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.style.top = Math.random() * 100 + '%';
+            sparkle.style.left = Math.random() * 100 + '%';
+            sparkle.style.animationDelay = Math.random() * 3 + 's';
+            sparkle.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            document.body.appendChild(sparkle);
+            
+            setTimeout(() => {
+                sparkle.remove();
+            }, 5000);
+        }
+
+        setInterval(createSparkle, 800);
+        
+        for (let i = 0; i < 15; i++) {
+            setTimeout(createSparkle, i * 100);
+        }
+    </script>
+</body>
+</html>
