@@ -1,0 +1,11 @@
+ignoredBuiltDependencies:
+  - '@parcel/watcher'
+  - unix-dgram
+
+onlyBuiltDependencies:
+  - bufferutil
+  - esbuild
+  - keccak
+  - netlify-cli
+  - sharp
+  - utf-8-validate
