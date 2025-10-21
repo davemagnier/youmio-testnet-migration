@@ -1,6 +1,7 @@
 import type React from "react";
 import { useState, useEffect } from "react";
 import WalletConnect from "../WalletConnectModal.tsx";
+import MigrationFlow from "../MigrationFlow.tsx";
 import { useAccount, useDisconnect } from "wagmi";
 import "./mainnet.css";
 
@@ -16,6 +17,7 @@ const MainnetPage: React.FC = () => {
   const [modalImageSrc, setModalImageSrc] = useState("");
   const [modalImageLabel, setModalImageLabel] = useState("");
   const [walletModalOpen, setWalletModalOpen] = useState(false);
+  const [migrationFlowOpen, setMigrationFlowOpen] = useState(false);
 
   // Wallet connection hooks
   const { address, isConnected } = useAccount();
@@ -128,10 +130,15 @@ const MainnetPage: React.FC = () => {
       </div>
 
       <div className="container">
-        <WalletConnect
-          isOpen={walletModalOpen}
-          onClose={() => setWalletModalOpen(false)}
-        />
+<WalletConnect
+  isOpen={walletModalOpen}
+  onClose={() => setWalletModalOpen(false)}
+/>
+
+<MigrationFlow
+  isOpen={migrationFlowOpen}
+  onClose={() => setMigrationFlowOpen(false)}
+/>
 
         {/* Hero Section */}
         <div className="hero">
@@ -268,25 +275,25 @@ const MainnetPage: React.FC = () => {
               </div>
 
               <div className="migration-content">
-                <button
-                  className="btn-migrate"
-                  onClick={() => setWalletModalOpen(true)}
-                >
-                  <span style={{ position: "relative", zIndex: 1 }}>
-                    Migrate Badge to Mainnet
-                  </span>
-                  <svg
-                    style={{ position: "relative", zIndex: 1 }}
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                  </svg>
-                </button>
+<button
+  className="btn-migrate"
+  onClick={() => setMigrationFlowOpen(true)}
+>
+  <span style={{ position: "relative", zIndex: 1 }}>
+    Migrate Badge to Mainnet
+  </span>
+  <svg
+    style={{ position: "relative", zIndex: 1 }}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="3"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M5 12h14M12 5l7 7-7 7" />
+  </svg>
+</button>
 
                 <div className="final-step-badge">
                   <svg viewBox="0 0 24 24" fill="currentColor">

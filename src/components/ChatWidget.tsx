@@ -77,7 +77,7 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({
 
   const { data: sbtBalance } = useReadContract({
     chainId: youmio.id,
-    address: import.meta.env.VITE_SBT_CONTRACT_ADDRESS,
+    address: import.meta.env.VITE_SBT_CONTRACT_ADDRESS as `0x${string}`,
     abi: youmioSbtAbi,
     functionName: "balanceOf",
     args: [address!],

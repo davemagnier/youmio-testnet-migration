@@ -948,6 +948,130 @@ h1 {
   display: flex;
 }
 
+/* Migration Flow Specific Styles */
+.migration-flow .migration-step {
+  text-align: center;
+}
+
+.migration-flow .migration-step h3 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #fff 0%, #c4a5d9 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.migration-flow .migration-step .modal-description {
+  font-size: 1.1rem;
+  color: #e9d5ff;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.migration-flow .eligibility-result {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.migration-flow .sbt-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 1rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  position: relative;
+  max-width: 550px;
+  margin: 0 auto;
+}
+
+.migration-flow .sbt-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 40px rgba(139, 92, 246, 0.3);
+}
+
+.migration-flow .sbt-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+  margin-bottom: 0.75rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.migration-flow .sbt-card img:hover {
+  transform: scale(1.02);
+  box-shadow: 0 12px 40px rgba(139, 92, 246, 0.5);
+}
+
+.migration-flow .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.migration-flow .eligible {
+  background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.migration-flow .not-eligible {
+  background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.migration-flow .token-id {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #c4a5d9;
+  margin-top: 1rem;
+}
+
+.migration-flow .success-step .sbt-card {
+  background: linear-gradient(
+    135deg,
+    rgba(16, 185, 129, 0.2) 0%,
+    rgba(52, 211, 153, 0.2) 100%
+  );
+  border: 2px solid rgba(16, 185, 129, 0.4);
+}
+
+.migration-flow .error-step .modal-description {
+  color: #f87171;
+  font-weight: 600;
+}
+
+.migration-flow .btn-outline {
+  background: transparent;
+  border: 2px solid rgba(196, 165, 217, 0.5);
+  color: #c4a5d9;
+  margin-left: 1rem;
+}
+
+.migration-flow .btn-outline:hover {
+  background: rgba(139, 92, 246, 0.2);
+  border-color: rgba(196, 165, 217, 0.8);
+}
+
 .modal-content {
   background: linear-gradient(135deg, #1a0d2e 0%, #2d1b4e 100%);
   border: 2px solid rgba(196, 165, 217, 0.3);
