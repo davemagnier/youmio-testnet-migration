@@ -1,12 +1,25 @@
 import type React from "react";
 import { useState, useEffect } from "react";
-import "./testnet.css";
+import WalletConnect from "../WalletConnectModal.tsx";
+import { useAccount, useDisconnect } from "wagmi";
+import "./mainnet.css";
 
-const TestnetPage: React.FC = () => {
+// Helper function to truncate wallet addresses
+const truncateAddress = (address: string | undefined): string => {
+  if (!address) return "Connect Wallet";
+  return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
+};
+
+const MainnetPage: React.FC = () => {
   const [starsModalActive, setStarsModalActive] = useState(false);
   const [imageModalActive, setImageModalActive] = useState(false);
   const [modalImageSrc, setModalImageSrc] = useState("");
   const [modalImageLabel, setModalImageLabel] = useState("");
+  const [walletModalOpen, setWalletModalOpen] = useState(false);
+
+  // Wallet connection hooks
+  const { address, isConnected } = useAccount();
+  const { disconnect } = useDisconnect();
 
   // Function to open stars modal
   const openStarsModal = () => {
@@ -88,16 +101,42 @@ const TestnetPage: React.FC = () => {
 
   return (
     <>
-      <div className="container">
-        {/* Logo */}
-        <div className="logo">
-          <img src="/youmio-logo.png" alt="Youmio" />
+      {/* Sticky Header */}
+      <div className="sticky-header">
+        <div className="header-content">
+          <div className="logo">
+            <img src="/youmio-logo.png" alt="Youmio" />
+          </div>
+          <button
+            className="wallet-connect-btn"
+            onClick={() =>
+              isConnected ? disconnect() : setWalletModalOpen(true)
+            }
+          >
+            {isConnected ? (
+              <span className="wallet-btn-content">
+                <span className="wallet-address">
+                  {truncateAddress(address)}
+                </span>
+                <span className="wallet-disconnect-text">Disconnect</span>
+              </span>
+            ) : (
+              "Connect Wallet"
+            )}
+          </button>
         </div>
+      </div>
+
+      <div className="container">
+        <WalletConnect
+          isOpen={walletModalOpen}
+          onClose={() => setWalletModalOpen(false)}
+        />
 
         {/* Hero Section */}
         <div className="hero">
           <div className="phase-badge">PHASE 1 COMPLETE ✓</div>
-          <h1>Youmio Chain Testnet</h1>
+          <h1>Youmio Chain Mainnet</h1>
           <p className="subtitle">
             A milestone achieved by our incredible community
           </p>
@@ -117,7 +156,7 @@ const TestnetPage: React.FC = () => {
                 src="/testnet-sbt.png"
                 alt="Youmio Testnet SBT"
                 onClick={() =>
-                  openImageModal("/testnet-sbt.png", "Youmio Testnet SBT")
+                  openImageModal("/testnet-sbt.png", "Youmio Mainnet SBT")
                 }
               />
               <div className="label">Current</div>
@@ -126,10 +165,10 @@ const TestnetPage: React.FC = () => {
 
             <div className="migration-center">
               <div className="migration-header">
-                <h3>Complete Your Testnet Journey</h3>
+                <h3>Complete Your Mainnet Journey</h3>
                 <p>
-                  Migrate your testnet participation badge to mainnet now and
-                  secure your position for maximum opportunities.
+                  Migrate your mainnet participation badge now and secure your
+                  position for maximum opportunities.
                 </p>
               </div>
 
@@ -231,15 +270,10 @@ const TestnetPage: React.FC = () => {
               <div className="migration-content">
                 <button
                   className="btn-migrate"
-                  onClick={() =>
-                    window.open(
-                      "https://opensea.io/collection/youmio-opensea",
-                      "_blank",
-                    )
-                  }
+                  onClick={() => setWalletModalOpen(true)}
                 >
                   <span style={{ position: "relative", zIndex: 1 }}>
-                    Migrate Testnet Badge to Mainnet
+                    Migrate Badge to Mainnet
                   </span>
                   <svg
                     style={{ position: "relative", zIndex: 1 }}
@@ -300,7 +334,7 @@ const TestnetPage: React.FC = () => {
                 Your participation on Youmio Studio will be key to unlocking
                 maximum future ecosystem rewards & to give you an early
                 advantage we are gifting a pack of stars to each wallet that
-                used this testnet.
+                participated in the testnet.
               </p>
               <button className="btn btn-secondary" onClick={openStarsModal}>
                 How do Stars work?
@@ -324,7 +358,7 @@ const TestnetPage: React.FC = () => {
 
           {/* Wearable Bonus Card */}
           <div className="coming-soon-card wearable-card">
-            <div className="wearable-badge-top">TESTNET EXCLUSIVE</div>
+            <div className="wearable-badge-top">MAINNET EXCLUSIVE</div>
             <div className="blurred-wearable-container">
               <img
                 src="/wearable-bonus-blurred.png"
@@ -411,4 +445,4 @@ const TestnetPage: React.FC = () => {
   );
 };
 
-export default TestnetPage;
+export default MainnetPage;

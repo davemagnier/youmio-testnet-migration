@@ -2,26 +2,26 @@ import { Abi, Address, Chain, createPublicClient, createWalletClient, defineChai
 import { privateKeyToAccount } from "viem/accounts";
 import { sepolia } from "viem/chains";
 
-export const youmioTestnet = defineChain({
+export const youmioMainnet = defineChain({
   id: 68854,
-  name: 'YouTest Testnet',
-  nativeCurrency: { name: 'YTEST', symbol: 'YTEST', decimals: 18 },
+  name: 'Youmio Mainnet',
+  nativeCurrency: { name: 'YOU', symbol: 'YOU', decimals: 18 },
   rpcUrls: {
     default: {
-      http: ['https://subnets.avax.network/youtest/testnet/rpc'],
+      http: ['https://subnets.avax.network/youmio/mainnet/rpc'],
     },
   },
   blockExplorers: {
     default: {
-      name: 'Youmio Testnet Explorer',
-      url: 'https://explorer-test.avax.network/youtest',
+      name: 'Youmio Mainnet Explorer',
+      url: 'https://explorer.avax.network/youmio',
     },
   },
-  testnet: true,
+  testnet: false,
 })
 
 export const chains: Record<string, Chain> = {
-  youmioTestnet,
+  youmioMainnet,
   sepolia
 }
 

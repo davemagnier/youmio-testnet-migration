@@ -1,6 +1,6 @@
-# Youmio Testnet Migration
+# Youmio Mainnet
 
-A web application for Youmio chain testnet migration with badge minting, faucet functionality, and Limbo AI chat integration.
+A web application for Youmio chain mainnet with badge minting, faucet functionality, and Limbo AI chat integration.
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/your-badge-id/deploy-status)](https://app.netlify.com/sites/your-site-name/deploys)
 
@@ -20,8 +20,8 @@ A web application for Youmio chain testnet migration with badge minting, faucet 
 
 ## Features
 
-- **Testnet Badge Migration**: Migrate your testnet participation badge to mainnet
-- **Faucet Functionality**: Get test tokens for the Youmio testnet
+- **Mainnet Badge Migration**: Migrate your mainnet participation badge
+- **Faucet Functionality**: Get tokens for the Youmio mainnet
 - **Limbo AI Chat**: Interactive chat widget with AI personality
 - **Wallet Integration**: Connect with Ethereum wallets via Wagmi
 - **SBT Minting**: Mint Soulbound Tokens (SBTs) on the Youmio chain
@@ -32,7 +32,7 @@ A web application for Youmio chain testnet migration with badge minting, faucet 
 - Node.js >= 18.0.0
 - pnpm package manager
 - Ethereum wallet (MetaMask or similar)
-- Access to Youmio testnet
+- Access to Youmio mainnet
 
 ## Getting Started
 
@@ -76,7 +76,7 @@ NETLIFY_SITE_ID=your-site-id
 NETLIFY_AUTH_TOKEN=your-auth-token
 
 # Blockchain configuration
-VITE_RPC_URL=https://subnets.avax.network/youtest/testnet/rpc
+VITE_RPC_URL=https://subnets.avax.network/youtest/mainnet/rpc
 VITE_CHAIN_ID=your-chain-id
 ```
 
@@ -167,7 +167,7 @@ youmio-testnet-migration/
 │   │   ├── index.html            # Main HTML template
 │   │   ├── limbo-admin.html      # Admin interface
 │   │   ├── limbo-chatbot.html    # Chatbot interface
-│   │   ├── testnet.html          # Testnet interface
+│   │   ├── mainnet.html          # Mainnet interface
 │   │   └── testnet-status.html   # Testnet status page
 │   ├── routes/                   # TanStack Router routes
 │   │   ├── __root.tsx            # Root layout component
@@ -228,23 +228,23 @@ The application uses Wagmi for wallet integration, allowing users to connect the
 3. Approve the connection in your wallet
 4. The application will automatically switch to the correct network
 
-### Testnet Badge Migration
+### Mainnet Badge Migration
 
-Users can migrate their testnet participation badges to mainnet:
+Users can mint their mainnet participation badges:
 
 1. Connect your wallet
-2. Click "Migrate Testnet Badge to Mainnet"
+2. Click "Migrate Badge to Mainnet"
 3. Confirm the transaction in your wallet
 4. View your migrated badge on OpenSea
 
 ### Faucet Functionality
 
-Get test tokens for the Youmio testnet:
+Get tokens for the Youmio mainnet:
 
 1. Connect your wallet
-2. Click the "Get Test Tokens" button in the faucet module
+2. Click the "Get Tokens" button in the faucet module
 3. Confirm the transaction in your wallet
-4. Receive test tokens in your wallet
+4. Receive tokens in your wallet
 
 ### Limbo AI Chat
 
@@ -264,7 +264,7 @@ Interact with the Limbo AI personality:
    - Refresh the page if connection fails
 
 2. **Faucet Not Working**
-   - Check if you're on the correct testnet
+   - Check if you're on the correct mainnet
    - Verify your wallet has sufficient gas
    - Wait for cooldown period if applicable
 

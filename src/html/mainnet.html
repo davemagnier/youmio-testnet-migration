@@ -20,7 +20,7 @@
       https://subnets.avax.network;"
     />
     <meta name="referrer" content="no-referrer" />
-    <title>Youmio L1 Testnet - Youmio Chain</title>
+    <title>Youmio L1 Mainnet - Youmio Chain</title>
     <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
@@ -1994,7 +1994,7 @@
     <div class="onboarding-overlay" id="onboardingOverlay">
       <div class="onboarding-container" id="onboardingStep1">
         <div class="onboarding-header">
-          <h1 class="onboarding-title">Youmio Testnet</h1>
+          <h1 class="onboarding-title">Youmio Mainnet</h1>
           <p class="onboarding-subtitle">
             Experience the future of decentralized interactions. Test our chain,
             collect badges, and explore with Limbo.
@@ -2006,9 +2006,9 @@
         </div>
 
         <div class="onboarding-actions">
-          <button class="action-button primary" onclick="startOnboarding()">
-            Enter Testnet
-          </button>
+<button class="action-button primary" onclick="startOnboarding()">
+             Enter Mainnet
+           </button>
           <button class="action-button secondary" onclick="skipOnboarding()">
             I'm already set up
           </button>
@@ -2094,7 +2094,7 @@
           <div class="checkbox-label">
             I acknowledge that I have read and agree to the
             <a href="#" target="_blank">Terms of Service</a> and understand that
-            testnet tokens have no real value.
+            mainnet tokens have no real value.
           </div>
         </div>
 
@@ -2376,7 +2376,7 @@
               >
                 <span>Mint Soulbound Badge</span>
               </button>
-              <div class="limit-text">Prove your testnet participation</div>
+              <div class="limit-text">Prove your mainnet participation</div>
             </div>
           </div>
 
@@ -2391,7 +2391,7 @@
             <div class="module-content">
               <div class="stats-list">
                 <div class="stat-item">
-                  <span class="stat-label">Testnet Tokens</span>
+                  <span class="stat-label">Mainnet Tokens</span>
                   <span class="stat-value" id="statTokens">0 $KELLS</span>
                 </div>
                 <div class="stat-item">
@@ -2446,7 +2446,7 @@
             <div class="message assistant">
               <div class="message-label">Limbo</div>
               <div class="message-content">
-                yo, welcome to the testnet. mint some tokens and let's test this
+                yo, welcome to the mainnet. mint some tokens and let's test this
                 chain
               </div>
             </div>
@@ -2486,21 +2486,21 @@
     </div>
 
     <script>
-      // Configuration for YOUMIO Testnet
+      // Configuration for YOUMIO Mainnet
       const CONFIG = {
         API_PROXY_URL:
           window.location.hostname === "localhost"
             ? "http://localhost:8888/.netlify/functions"
             : "/.netlify/functions",
-        TESTNET_CHAIN_ID: "0x10cf6",
-        TESTNET_RPC_URL: "https://subnets.avax.network/youtest/testnet/rpc",
-        TESTNET_CHAIN_NAME: "YOUMIO Testnet",
-        TESTNET_CURRENCY: {
+        MAINNET_CHAIN_ID: "0x10cf6",
+        MAINNET_RPC_URL: "https://subnets.avax.network/youtest/mainnet/rpc",
+        MAINNET_CHAIN_NAME: "YOUMIO Mainnet",
+        MAINNET_CURRENCY: {
           name: "YOUMIO",
-          symbol: "YTEST",
+          symbol: "YMAIN",
           decimals: 18,
         },
-        TESTNET_EXPLORER: null,
+        MAINNET_EXPLORER: null,
         KELLS_TOKEN_ADDRESS: "0x6ACaf9E9EF556E69466362DD8086F25281beD293",
       };
 
@@ -3116,7 +3116,7 @@
             networkBtn.classList.add("connected");
             networkBtn.classList.remove("wrong-network");
             networkLed.classList.remove("wrong");
-            networkText.textContent = "YOUMIO Testnet";
+            networkText.textContent = "YOUMIO Mainnet";
           } else {
             console.log({ chainId });
 
@@ -3147,7 +3147,7 @@
         if (!isCorrectNetwork) {
           await addTestnetToWallet();
         } else {
-          showNotification("Already connected to YOUMIO Testnet", "success");
+          showNotification("Already connected to YOUMIO Mainnet", "success");
         }
       }
 
@@ -3370,7 +3370,7 @@
                 document.getElementById("step3").classList.add("completed");
               }
 
-              showNotification("Switched to KELLS Testnet!", "success");
+              showNotification("Switched to KELLS Mainnet!", "success");
               checkNetworkStatus();
 
               if (
@@ -3403,7 +3403,7 @@
                   }
 
                   showNotification(
-                    "KELLS Testnet added successfully!",
+                    "KELLS Mainnet added successfully!",
                     "success"
                   );
                   checkNetworkStatus();
@@ -3604,9 +3604,9 @@
         showNotification("Wallet disconnected", "success");
       }
 
-      function loadUserData() {
+function loadUserData() {
         const userData = JSON.parse(
-          localStorage.getItem(`testnet_${userAddress}`) || "{}"
+          localStorage.getItem(`mainnet_${userAddress}`) || "{}"
         );
 
         tokenBalance = userData.tokenBalance || 0;
@@ -3631,8 +3631,8 @@
           chatsMinted,
           lastClaimDate: new Date().toDateString(),
         };
-        localStorage.setItem(
-          `testnet_${userAddress}`,
+localStorage.setItem(
+          `mainnet_${userAddress}`,
           JSON.stringify(userData)
         );
       }
@@ -3742,7 +3742,7 @@
         }
 
         if (hasBadge) {
-          showNotification("You already have a testnet badge!", "error");
+          showNotification("You already have a mainnet badge!", "error");
           return;
         }
 
@@ -3758,7 +3758,7 @@
           updateUI();
 
           showNotification(
-            "Testnet participation badge minted successfully!",
+            "Mainnet participation badge minted successfully!",
             "success"
           );
         }, 3000);
