@@ -203,22 +203,26 @@ const MigrationFlow: React.FC<MigrationFlowProps> = ({ isOpen, onClose }) => {
           {currentStep === "connect" && (
             <div className="migration-step">
               <h3>Connect Your Wallet</h3>
-              <p className="modal-description">Please connect your wallet to begin the migration process.</p>
+              <p className="modal-description">
+                Please connect your wallet to begin the migration process.
+              </p>
 
               <div className="wallet-connectors">
-                {connectors.map((connector) => (
-                  <button
-                    key={connector.id}
-                    className="btn wallet-connector-btn"
-                    onClick={() => handleConnect(connector)}
-                    disabled={isConnecting}
-                  >
-                    {isConnecting ? (
-                      <span className="loading-spinner"></span>
-                    ) : null}
-                    <span>{connector.name}</span>
-                  </button>
-                ))}
+                {connectors
+                  .filter((connector) => connector.name !== "Injected")
+                  .map((connector) => (
+                    <button
+                      key={connector.id}
+                      className="btn wallet-connector-btn"
+                      onClick={() => handleConnect(connector)}
+                      disabled={isConnecting}
+                    >
+                      {isConnecting ? (
+                        <span className="loading-spinner"></span>
+                      ) : null}
+                      <span>{connector.name}</span>
+                    </button>
+                  ))}
               </div>
 
               {connectError && (
@@ -233,7 +237,9 @@ const MigrationFlow: React.FC<MigrationFlowProps> = ({ isOpen, onClose }) => {
           {currentStep === "eligibility" && (
             <div className="migration-step">
               <h3>Checking Eligibility</h3>
-              <p className="modal-description">Verifying your testnet SBT status...</p>
+              <p className="modal-description">
+                Verifying your testnet SBT status...
+              </p>
 
               {isTestnetBalanceLoading || isMainnetBalanceLoading ? (
                 <div className="loading-spinner"></div>
