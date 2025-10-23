@@ -4,16 +4,16 @@ import { SessionData } from "../utils/auth-store.ts";
 import { sessionAuth } from "../utils/middlewares.ts";
 import { getTokenOwner } from "../utils/contract/sbt.ts";
 import { getDecryptedMessages } from "../utils/message-store.ts";
-import { Address } from "viem";
+import { Address, Hex } from "viem";
+import { youmioMainnet } from "../utils/chain.ts";
 
-const chainId = parseInt(Netlify.env.get("CHAIN_ID") || "68854");
-const SbtContractAddress = Netlify.env.get("SBT_CONTRACT") as Address;
+const mainnetChainId = youmioMainnet.id;
+const mainnetRpcUrl = youmioMainnet.rpcUrls.default.http[0] as string;
+
+const mainnetSbtContractAddress = Netlify.env.get("SBT_CONTRACT") as Address;
 const encryptionKey = Netlify.env.get("ENCRYPTION_KEY");
-const rpcUrl =
-	Netlify.env.get("RPC_URL") ||
-	"https://subnets.avax.network/youtest/testnet/rpc";
 
-if (!SbtContractAddress || !encryptionKey) {
+if (!mainnetSbtContractAddress || !encryptionKey) {
 	throw new Error("One or more required environment variables are not set");
 }
 
@@ -37,9 +37,9 @@ app.get("/", async (c) => {
 	}
 	const tokenOwner = await getTokenOwner(
 		BigInt(tokenId),
-		SbtContractAddress,
-		chainId,
-		rpcUrl,
+		mainnetSbtContractAddress,
+		mainnetChainId,
+		mainnetRpcUrl,
 	);
 	if (tokenOwner.toLowerCase() !== session.walletAddress.toLowerCase()) {
 		return c.json({ error: "Session does not own this token" }, 400);
@@ -48,9 +48,9 @@ app.get("/", async (c) => {
 	const messages = await getDecryptedMessages(
 		BigInt(tokenId),
 		encryptionKey,
-		SbtContractAddress,
-		rpcUrl,
-		chainId,
+		mainnetSbtContractAddress,
+		mainnetRpcUrl,
+		mainnetChainId,
 	);
 
 	return c.json({ messages: messages.filter((m) => Boolean(m?.message)) });

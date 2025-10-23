@@ -130,7 +130,7 @@ const MigrationFlow: React.FC<MigrationFlowProps> = ({ isOpen, onClose }) => {
         setCurrentStep("mint");
       } else {
         setErrorMessage(
-          "You are not eligible for migration. You need to have a testnet SBT and no mainnet SBT.",
+          "You are not eligible for migration. You need to have a testnet SBT and no mainnet SBT."
         );
         setCurrentStep("error");
       }
@@ -203,7 +203,9 @@ const MigrationFlow: React.FC<MigrationFlowProps> = ({ isOpen, onClose }) => {
           {currentStep === "connect" && (
             <div className="migration-step">
               <h3>Connect Your Wallet</h3>
-              <p className="modal-description">Please connect your wallet to begin the migration process.</p>
+              <p className="modal-description">
+                Please connect your wallet to begin the migration process.
+              </p>
 
               <div className="wallet-connectors">
                 {connectors.map((connector) => (
@@ -233,7 +235,9 @@ const MigrationFlow: React.FC<MigrationFlowProps> = ({ isOpen, onClose }) => {
           {currentStep === "eligibility" && (
             <div className="migration-step">
               <h3>Checking Eligibility</h3>
-              <p className="modal-description">Verifying your testnet SBT status...</p>
+              <p className="modal-description">
+                Verifying your testnet SBT status...
+              </p>
 
               {isTestnetBalanceLoading || isMainnetBalanceLoading ? (
                 <div className="loading-spinner"></div>

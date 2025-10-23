@@ -3,7 +3,7 @@ import { defineChain } from "viem";
 // Mainnet chain configuration
 // TODO: Consider using dedicated RPC URL with credentials for production
 export const youmioMainnet = defineChain({
-  id: 68853,
+  id: 688540,
   name: "Youmio Mainnet",
   nativeCurrency: { name: "Youmio", symbol: "YOU", decimals: 18 },
   rpcUrls: {
@@ -11,7 +11,7 @@ export const youmioMainnet = defineChain({
       http: [
         // Use environment variable for RPC URL if available, fallback to default
         import.meta.env?.VITE_MAINNET_RPC_URL ||
-          "https://subnets.avax.network/youmio/mainnet/rpc",
+        "https://subnets.avax.network/youmio/mainnet/rpc",
       ],
     },
   },
@@ -35,7 +35,7 @@ export const youmioTestnet = defineChain({
       http: [
         // Use environment variable for RPC URL if available, fallback to default
         import.meta.env?.VITE_TESTNET_RPC_URL ||
-          "https://subnets.avax.network/youtest/testnet/rpc",
+        "https://subnets.avax.network/youtest/testnet/rpc",
       ],
     },
   },

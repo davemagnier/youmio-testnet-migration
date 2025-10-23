@@ -10,16 +10,17 @@ import { SessionData } from "../utils/auth-store.ts";
 import { mintNativeCoin } from "../utils/faucet.ts";
 import { sessionAuth } from "../utils/middlewares.ts";
 import { getCurrentEpoch } from "../utils/time.ts";
+import { youmioMainnet } from "../utils/chain.ts";
 
-const chainId = parseInt(Netlify.env.get("CHAIN_ID") || "68854");
+const mainnetChainId = youmioMainnet.id;
+const mainnetRpcUrl = youmioMainnet.rpcUrls.default.http[0] as string;
+
 const faucetAddress = Netlify.env.get("FAUCET_CONTRACT") as Address;
 const faucetPrivateKey = Netlify.env.get("FAUCET_PRIVATE_KEY") as Hex;
 const faucetAmount = BigInt(
 	Netlify.env.get("FAUCET_AMOUNT") || "90000000000000000000",
 );
-const rpcUrl =
-	Netlify.env.get("RPC_URL") ||
-	"https://subnets.avax.network/youtest/testnet/rpc";
+
 const faucetCooldownSeconds = parseInt(
 	Netlify.env.get("FAUCET_COOLDOWN_SECONDS") || "86400",
 );
@@ -61,10 +62,10 @@ app.post("/claim", async (c) => {
 	const success = await mintNativeCoin({
 		walletAddress: session.walletAddress,
 		amount: faucetAmount,
-		chainId,
+		chainId: mainnetChainId,
 		faucetAddress,
 		faucetPrivateKey,
-		rpcUrl,
+		rpcUrl: mainnetRpcUrl,
 	});
 
 	if (!success) {

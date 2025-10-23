@@ -41,7 +41,7 @@ const WalletConnectModal: React.FC<WalletConnectModalProps> = ({
         </div>
         <div className="modal-body">
           <div className="modal-description">
-            <p>Choose your preferred wallet to connect to the Youmio Testnet</p>
+            <p>Choose your preferred wallet to connect to the Youmio Network</p>
           </div>
 
           <div className="installation-steps">

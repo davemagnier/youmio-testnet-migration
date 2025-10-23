@@ -1,26 +1,56 @@
 import { Abi, Address, Chain, createPublicClient, createWalletClient, defineChain, getContract, GetContractReturnType, Hex, http } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 import { sepolia } from "viem/chains";
-
+// Mainnet chain configuration
+// TODO: Consider using dedicated RPC URL with credentials for production
 export const youmioMainnet = defineChain({
-  id: 68854,
-  name: 'Youmio Mainnet',
-  nativeCurrency: { name: 'YOU', symbol: 'YOU', decimals: 18 },
+  id: 688540,
+  name: "Youmio Mainnet",
+  nativeCurrency: { name: "Youmio", symbol: "YOU", decimals: 18 },
   rpcUrls: {
     default: {
-      http: ['https://subnets.avax.network/youmio/mainnet/rpc'],
+      http: [
+        // Use environment variable for RPC URL if available, fallback to default
+        Netlify.env.get("MAINNET_RPC_URL") ||
+        "https://subnets.avax.network/youmio/mainnet/rpc",
+      ],
     },
   },
   blockExplorers: {
     default: {
-      name: 'Youmio Mainnet Explorer',
-      url: 'https://explorer.avax.network/youmio',
+      name: "Youmioscan",
+      url: "https://explorer.avax.network/youmio",
     },
   },
   testnet: false,
-})
+});
+
+// Testnet chain configuration
+// TODO: Replace with actual testnet RPC URL and consider using dedicated credentials
+export const youmioTestnet = defineChain({
+  id: 68854,
+  name: "Youmio Testnet",
+  nativeCurrency: { name: "Youmio", symbol: "YOU", decimals: 18 },
+  rpcUrls: {
+    default: {
+      http: [
+        // Use environment variable for RPC URL if available, fallback to default
+        Netlify.env.get("TESTNET_RPC_URL") ||
+        "https://subnets.avax.network/youtest/testnet/rpc",
+      ],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: "Youmio Testnet Explorer",
+      url: "https://explorer.avax.network/youtest",
+    },
+  },
+  testnet: true,
+});
 
 export const chains: Record<string, Chain> = {
+  youmioTestnet,
   youmioMainnet,
   sepolia
 }
