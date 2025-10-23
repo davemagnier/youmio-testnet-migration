@@ -280,16 +280,16 @@ const MigrationFlow: React.FC<MigrationFlowProps> = ({ isOpen, onClose }) => {
                 <div className="loading-spinner"></div>
               ) : (
                 <div className="eligibility-result">
-                  <div className="sbt-card testnet">
-                    <img src="/testnet-sbt.png" alt="Testnet SBT" />
-                    <div className="overlay">
-                      {testnetBalance !== undefined && testnetBalance > 0n ? (
-                        <span className="eligible">Eligible</span>
-                      ) : (
-                        <span className="not-eligible">Not Eligible</span>
-                      )}
-                    </div>
-                  </div>
+<div className="sbt-card testnet half-size">
+                 <img src="/testnet-sbt.png" alt="Testnet SBT" />
+                 <div className="overlay">
+                   {testnetBalance !== undefined && testnetBalance > 0n ? (
+                     <span className="eligible">Eligible</span>
+                   ) : (
+                     <span className="not-eligible">Not Eligible</span>
+                   )}
+                 </div>
+               </div>
                 </div>
               )}
             </div>
@@ -304,9 +304,9 @@ const MigrationFlow: React.FC<MigrationFlowProps> = ({ isOpen, onClose }) => {
                 SBT.
               </p>
 
-              <div className="sbt-card mainnet">
-                <img src="/mainnet-sbt.png" alt="Mainnet SBT" />
-              </div>
+<div className="sbt-card mainnet half-size">
+               <img src="/mainnet-sbt.png" alt="Mainnet SBT" />
+             </div>
 
               <button
                 className="btn btn-primary"
@@ -340,12 +340,12 @@ const MigrationFlow: React.FC<MigrationFlowProps> = ({ isOpen, onClose }) => {
                 Congratulations! Your mainnet SBT has been minted successfully.
               </p>
 
-              <div className="sbt-card mainnet success">
-                <img src="/mainnet-sbt.png" alt="Mainnet SBT" />
-                <div className="token-id">
-                  Token ID: {tokenId?.toString() || "..."}
-                </div>
-              </div>
+<div className="sbt-card mainnet success half-size">
+               <img src="/mainnet-sbt.png" alt="Mainnet SBT" />
+               <div className="token-id">
+                 Token ID: {tokenId?.toString() || "..."}
+               </div>
+             </div>
 
               <button className="btn btn-primary" onClick={onClose}>
                 Close

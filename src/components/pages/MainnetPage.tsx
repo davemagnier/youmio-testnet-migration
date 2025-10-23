@@ -172,10 +172,10 @@ const MainnetPage: React.FC = () => {
 
             <div className="migration-center">
               <div className="migration-header">
-                <h3>Complete Your Mainnet Journey</h3>
+                <h3>Complete Your Testnet Journey</h3>
                 <p>
-                  Migrate your mainnet participation badge now and secure your
-                  position for maximum opportunities.
+                  Migrate your Testnet participation badge to Mainnet now and
+                  secure your position for maximum opportunities.
                 </p>
               </div>
 

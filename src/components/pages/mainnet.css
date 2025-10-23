@@ -990,6 +990,14 @@ h1 {
   margin: 0 auto;
 }
 
+.migration-flow .sbt-card.half-size {
+  max-width: 275px;
+}
+
+.migration-flow .sbt-card.half-size::after {
+  display: none;
+}
+
 .migration-flow .sbt-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 40px rgba(139, 92, 246, 0.3);
@@ -1003,6 +1011,11 @@ h1 {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   cursor: pointer;
   transition: all 0.3s ease;
+}
+
+.migration-flow .sbt-card.half-size img {
+  /* max-width: 50%; */
+  margin: 0 auto;
 }
 
 .migration-flow .sbt-card img:hover {
@@ -1387,6 +1400,28 @@ h1 {
   .container {
     padding: 1.5rem;
   }
+
+  /* Modal responsive adjustments */
+  .modal-content {
+    padding: 2rem;
+    max-width: 700px;
+  }
+
+  .modal-title {
+    font-size: 1.7rem;
+  }
+
+  .modal-description {
+    font-size: 1rem;
+  }
+
+  .migration-flow .migration-step h3 {
+    font-size: 1.5rem;
+  }
+
+  .migration-flow .migration-step .modal-description {
+    font-size: 1rem;
+  }
 }
 
 @media (max-width: 640px) {
@@ -1511,6 +1546,23 @@ h1 {
 
   .modal-content {
     padding: 2rem 1.5rem;
+    max-width: 95%;
+  }
+
+  .modal-title {
+    font-size: 1.5rem;
+  }
+
+  .modal-description {
+    font-size: 0.95rem;
+  }
+
+  .migration-flow .migration-step h3 {
+    font-size: 1.3rem;
+  }
+
+  .migration-flow .migration-step .modal-description {
+    font-size: 0.95rem;
   }
 
   .stat-card {
@@ -1654,5 +1706,31 @@ h1 {
 
   .overlay-text {
     padding: 1.5rem;
+  }
+
+  /* Modal responsive adjustments for smallest screens */
+  .modal-content {
+    padding: 1.5rem 1rem;
+  }
+
+  .modal-title {
+    font-size: 1.3rem;
+  }
+
+  .modal-description {
+    font-size: 0.9rem;
+  }
+
+  .migration-flow .migration-step h3 {
+    font-size: 1.1rem;
+  }
+
+  .migration-flow .migration-step .modal-description {
+    font-size: 0.9rem;
+  }
+
+  .btn {
+    padding: 0.8rem 1.5rem;
+    font-size: 0.9rem;
   }
 }
