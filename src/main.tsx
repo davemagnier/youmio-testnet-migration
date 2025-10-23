@@ -4,6 +4,7 @@ import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { WagmiProvider } from "wagmi";
 import { config } from "./wagmi/config";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { AuthProvider } from "./contexts/auth-context";
 
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
@@ -28,7 +29,9 @@ if (!rootElement.innerHTML) {
     <StrictMode>
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
-          <RouterProvider router={router} />
+          <AuthProvider>
+            <RouterProvider router={router} />
+          </AuthProvider>
         </QueryClientProvider>
       </WagmiProvider>
     </StrictMode>,

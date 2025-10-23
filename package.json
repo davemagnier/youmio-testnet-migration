@@ -55,10 +55,6 @@
   "engines": {
     "node": ">=18.0.0"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/yourusername/youmio-testnet.git"
-  },
   "keywords": [
     "youmio",
     "limbo",

@@ -1,6 +1,9 @@
-import React from "react";
-import { useConnect, type Connector } from "wagmi";
+import React, { useEffect } from "react";
+import { useAccount, useConnect, useSwitchChain, type Connector } from "wagmi";
+import { useAuthenticate } from "../hooks/use-auth";
 import "./pages/mainnet.css";
+import { useAuth } from "../contexts/auth-context";
+import { youmioMainnet } from "../wagmi/chain";
 
 interface WalletConnectModalProps {
   isOpen: boolean;
@@ -11,12 +14,35 @@ const WalletConnectModal: React.FC<WalletConnectModalProps> = ({
   isOpen,
   onClose,
 }) => {
-  const { connectors, connect, isPending, error } = useConnect();
+  const { connectors, isPending, error, connect } = useConnect();
+  const { address, isConnected } = useAccount();
+  const { session } = useAuth();
+  const { isAuthenticating, authError, authenticate } = useAuthenticate();
+  const { switchChain } = useSwitchChain();
 
   // Handle connection
   const handleConnect = async (connector: Connector) => {
-    connect({ connector }, { onSuccess: () => onClose() });
+    connect(
+      { connector },
+      {
+        onSuccess: () => {
+          switchChain({
+            chainId: youmioMainnet.id,
+          });
+        },
+      },
+    );
   };
+
+  useEffect(() => {
+    const effect = async () => {
+      await authenticate(address!);
+      onClose();
+    };
+    if (!session && !isAuthenticating && isConnected) {
+      effect();
+    }
+  }, [isConnected, isAuthenticating, address, session]);
 
   // Close modal when clicking outside
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -44,33 +70,58 @@ const WalletConnectModal: React.FC<WalletConnectModalProps> = ({
             <p>Choose your preferred wallet to connect to the Youmio Network</p>
           </div>
 
-          <div className="installation-steps">
-            {connectors.length === 0 ? (
-              <div className="step-card">
-                <p>No wallets found. Please install a compatible wallet.</p>
-              </div>
-            ) : (
-              <div className="wallet-connectors">
-                {connectors
-                  .filter((connector) => connector.name !== "Injected")
-                  .map((connector) => (
-                    <button
-                      key={connector.id}
-                      className="btn wallet-connector-btn"
-                      onClick={() => handleConnect(connector)}
-                      disabled={isPending}
-                    >
-                      {isPending ? (
-                        <span className="loading-spinner"></span>
-                      ) : null}
-                      <span>{connector.name}</span>
-                    </button>
-                  ))}
-              </div>
-            )}
-          </div>
+          {/* Show authentication progress */}
+          {isAuthenticating && (
+            <div
+              className="step-card"
+              style={{ textAlign: "center", padding: "20px" }}
+            >
+              <div className="loading-spinner"></div>
+              <p>Authenticating your wallet...</p>
+            </div>
+          )}
 
-          {error && (
+          {/* Show authentication error */}
+          {authError && (
+            <div
+              className="step-card"
+              style={{ color: "#ff6464", marginTop: "16px" }}
+            >
+              <p>Error: {authError}</p>
+            </div>
+          )}
+
+          {/* Show wallet connectors only when not authenticating */}
+          {!isAuthenticating && (
+            <div className="installation-steps">
+              {connectors.length === 0 ? (
+                <div className="step-card">
+                  <p>No wallets found. Please install a compatible wallet.</p>
+                </div>
+              ) : (
+                <div className="wallet-connectors">
+                  {connectors
+                    .filter((connector) => connector.name !== "Injected")
+                    .map((connector) => (
+                      <button
+                        type="button"
+                        key={connector.id}
+                        className="btn wallet-connector-btn"
+                        onClick={() => handleConnect(connector)}
+                        disabled={isPending || isAuthenticating}
+                      >
+                        {isPending ? (
+                          <span className="loading-spinner"></span>
+                        ) : null}
+                        <span>{connector.name}</span>
+                      </button>
+                    ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {error && !isAuthenticating && (
             <div
               className="step-card"
               style={{ color: "#ff6464", marginTop: "16px" }}

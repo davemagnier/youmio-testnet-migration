@@ -6,12 +6,14 @@ import {
   useWriteContract,
   useWaitForTransactionReceipt,
   Connector,
+  useSwitchChain,
 } from "wagmi";
 import { useQuery } from "@tanstack/react-query";
 import { youmioMainnet, youmioTestnet } from "../wagmi/chain";
 import { youmioSbtAbi } from "../utils/contract/abis/youmioSbt";
+import { useAuth } from "../contexts/auth-context";
 import "./pages/mainnet.css";
-
+import { toast } from "react-toastify";
 // Define TypeScript interfaces
 interface MigrationFlowProps {
   isOpen: boolean;
@@ -26,9 +28,12 @@ const MigrationFlow: React.FC<MigrationFlowProps> = ({ isOpen, onClose }) => {
   const [tokenId, setTokenId] = useState<bigint | null>(null);
 
   const { address, isConnected } = useAccount();
+  const { session } = useAuth();
+
+  const { switchChain } = useSwitchChain();
   const {
     connectors,
-    connect,
+    connectAsync,
     isPending: isConnecting,
     error: connectError,
   } = useConnect();
@@ -75,32 +80,59 @@ const MigrationFlow: React.FC<MigrationFlowProps> = ({ isOpen, onClose }) => {
     isLoading: isSignatureLoading,
     error: signatureError,
   } = useQuery({
-    queryKey: ["signature", address],
+    queryKey: ["signature", address, session],
     queryFn: async () => {
+      // Check if user is authenticated
+      if (!session) {
+        throw new Error("Authentication required. Please connect your wallet.");
+      }
+
       const response = await fetch("/api/v1/signature/take", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          "x-session": session,
         },
-        credentials: "include",
       });
 
       if (!response.ok) {
         const errorData = await response.json();
+
+        // Handle authentication errors
+        if (response.status === 401) {
+          throw new Error(
+            "Authentication expired. Please reconnect your wallet.",
+          );
+        }
+
+        if (response.status === 403) {
+          throw new Error("Session expired. Please reconnect your wallet.");
+        }
+
         throw new Error(errorData.error || "Failed to fetch signature");
       }
 
       return response.json();
     },
-    enabled: currentStep === "mint" && isConnected,
+    enabled: currentStep === "mint" && isConnected && session !== null,
   });
 
   // Handle connection
   const handleConnect = async (connector: Connector) => {
     try {
-      connect({ connector });
+      await connectAsync(
+        { connector },
+        {
+          onSuccess: () => {
+            switchChain({
+              chainId: youmioMainnet.id,
+            });
+          },
+        },
+      );
     } catch (error: unknown) {
       console.error("Connection error:", error);
+      toast("Failed to connect wallet");
       setErrorMessage("Failed to connect wallet");
       setCurrentStep("error");
     }
@@ -171,7 +203,7 @@ const MigrationFlow: React.FC<MigrationFlowProps> = ({ isOpen, onClose }) => {
     }
 
     if (mintError) {
-      setErrorMessage(mintError.message || "Failed to mint SBT");
+      setErrorMessage("Failed to mint SBT");
       setCurrentStep("error");
     }
   }, [isConfirmed, hash, mintError]);
@@ -275,6 +307,7 @@ const MigrationFlow: React.FC<MigrationFlowProps> = ({ isOpen, onClose }) => {
 
               <button
                 className="btn btn-primary"
+                style={{ marginTop: "1rem" }}
                 onClick={handleMint}
                 disabled={isMinting || isSignatureLoading}
               >

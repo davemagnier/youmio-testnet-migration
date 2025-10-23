@@ -1,59 +1,24 @@
-import { Abi, Address, Chain, createPublicClient, createWalletClient, defineChain, getContract, GetContractReturnType, Hex, http } from "viem";
+import {
+  type Abi,
+  type Address,
+  type Chain,
+  createPublicClient,
+  createWalletClient,
+  type GetContractReturnType,
+  getContract,
+  type Hex,
+  http,
+} from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 import { sepolia } from "viem/chains";
-// Mainnet chain configuration
-// TODO: Consider using dedicated RPC URL with credentials for production
-export const youmioMainnet = defineChain({
-  id: 688540,
-  name: "Youmio Mainnet",
-  nativeCurrency: { name: "Youmio", symbol: "YOU", decimals: 18 },
-  rpcUrls: {
-    default: {
-      http: [
-        // Use environment variable for RPC URL if available, fallback to default
-        Netlify.env.get("MAINNET_RPC_URL") ||
-        "https://subnets.avax.network/youmio/mainnet/rpc",
-      ],
-    },
-  },
-  blockExplorers: {
-    default: {
-      name: "Youmioscan",
-      url: "https://explorer.avax.network/youmio",
-    },
-  },
-  testnet: false,
-});
-
-// Testnet chain configuration
-// TODO: Replace with actual testnet RPC URL and consider using dedicated credentials
-export const youmioTestnet = defineChain({
-  id: 68854,
-  name: "Youmio Testnet",
-  nativeCurrency: { name: "Youmio", symbol: "YOU", decimals: 18 },
-  rpcUrls: {
-    default: {
-      http: [
-        // Use environment variable for RPC URL if available, fallback to default
-        Netlify.env.get("TESTNET_RPC_URL") ||
-        "https://subnets.avax.network/youtest/testnet/rpc",
-      ],
-    },
-  },
-  blockExplorers: {
-    default: {
-      name: "Youmio Testnet Explorer",
-      url: "https://explorer.avax.network/youtest",
-    },
-  },
-  testnet: true,
-});
+import { youmioMainnet, youmioTestnet } from "../wagmi/chain";
 
 export const chains: Record<string, Chain> = {
   youmioTestnet,
   youmioMainnet,
-  sepolia
-}
+  youmioTestnet,
+  sepolia,
+};
 
 export function findChain(id: number): Chain | undefined {
   return Object.values(chains).find((c) => c.id === id);
@@ -71,7 +36,11 @@ export function getPublicClient(chainId: number, rpcUrl: string, cache = true) {
   });
 }
 
-export function getWalletClient(chainId: number, rpcUrl: string, privateKey: Hex) {
+export function getWalletClient(
+  chainId: number,
+  rpcUrl: string,
+  privateKey: Hex,
+) {
   const chain = findChain(chainId);
   if (!chain) {
     throw new Error(`Chain with ID ${chainId} not found`);
@@ -80,7 +49,7 @@ export function getWalletClient(chainId: number, rpcUrl: string, privateKey: Hex
   return createWalletClient({
     chain,
     transport: http(rpcUrl),
-    account: privateKeyToAccount(privateKey)
+    account: privateKeyToAccount(privateKey),
   });
 }
 

@@ -1,16 +1,17 @@
 [dev]
-  command = "vite"
-  targetPort = 5173
-  port = 8000
+command = "vite"
+targetPort = 5173
+port = 8000
 
 [build]
-  command = "pnpm build"
-  functions = "src/functions"
+command = "pnpm build"
+functions = "src/functions"
 
 [functions]
-  node_bundler = "esbuild"
+node_bundler = "esbuild"
 
 [[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/:splat"
-  status = 200
+from = "/api/*"
+to = "/.netlify/functions/:splat"
+status = 200
+

@@ -130,15 +130,15 @@ const MainnetPage: React.FC = () => {
       </div>
 
       <div className="container">
-<WalletConnect
-  isOpen={walletModalOpen}
-  onClose={() => setWalletModalOpen(false)}
-/>
+        <WalletConnect
+          isOpen={walletModalOpen}
+          onClose={() => setWalletModalOpen(false)}
+        />
 
-<MigrationFlow
-  isOpen={migrationFlowOpen}
-  onClose={() => setMigrationFlowOpen(false)}
-/>
+        <MigrationFlow
+          isOpen={migrationFlowOpen}
+          onClose={() => setMigrationFlowOpen(false)}
+        />
 
         {/* Hero Section */}
         <div className="hero">
@@ -275,25 +275,25 @@ const MainnetPage: React.FC = () => {
               </div>
 
               <div className="migration-content">
-<button
-  className="btn-migrate"
-  onClick={() => setMigrationFlowOpen(true)}
->
-  <span style={{ position: "relative", zIndex: 1 }}>
-    Migrate Badge to Mainnet
-  </span>
-  <svg
-    style={{ position: "relative", zIndex: 1 }}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="3"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M5 12h14M12 5l7 7-7 7" />
-  </svg>
-</button>
+                <button
+                  className="btn-migrate"
+                  onClick={() => setMigrationFlowOpen(true)}
+                >
+                  <span style={{ position: "relative", zIndex: 1 }}>
+                    Migrate Badge to Mainnet
+                  </span>
+                  <svg
+                    style={{ position: "relative", zIndex: 1 }}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                </button>
 
                 <div className="final-step-badge">
                   <svg viewBox="0 0 24 24" fill="currentColor">
@@ -321,7 +321,7 @@ const MainnetPage: React.FC = () => {
         {/* Stats */}
         <div className="stats-grid">
           <div className="stat-card">
-            <div className="stat-number">5M+</div>
+            <div className="stat-number">7M+</div>
             <div className="stat-label">Total Transactions</div>
           </div>
           <div className="stat-card">

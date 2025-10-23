@@ -3,8 +3,8 @@ import { defineChain } from "viem";
 // Mainnet chain configuration
 // TODO: Consider using dedicated RPC URL with credentials for production
 export const youmioMainnet = defineChain({
-  id: 688540,
-  name: "Youmio Mainnet",
+  id: 61360,
+  name: "Youmio",
   nativeCurrency: { name: "Youmio", symbol: "YOU", decimals: 18 },
   rpcUrls: {
     default: {
