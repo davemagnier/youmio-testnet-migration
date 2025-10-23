@@ -23,11 +23,13 @@ interface MigrationFlowProps {
 type MigrationStep = "connect" | "eligibility" | "mint" | "success" | "error";
 
 const MigrationFlow: React.FC<MigrationFlowProps> = ({ isOpen, onClose }) => {
-  const [currentStep, setCurrentStep] = useState<MigrationStep>("connect");
   const [errorMessage, setErrorMessage] = useState("");
   const [tokenId, setTokenId] = useState<bigint | null>(null);
 
   const { address, isConnected } = useAccount();
+  const [currentStep, setCurrentStep] = useState<MigrationStep>(
+    !isConnected ? "connect" : "eligibility",
+  );
   const { session } = useAuth();
 
   const { switchChain } = useSwitchChain();
@@ -162,7 +164,7 @@ const MigrationFlow: React.FC<MigrationFlowProps> = ({ isOpen, onClose }) => {
         setCurrentStep("mint");
       } else {
         setErrorMessage(
-          "You are not eligible for migration. You need to have a testnet SBT and no mainnet SBT."
+          "You are not eligible for migration. You need to have a testnet SBT and no mainnet SBT.",
         );
         setCurrentStep("error");
       }
@@ -212,6 +214,7 @@ const MigrationFlow: React.FC<MigrationFlowProps> = ({ isOpen, onClose }) => {
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
       onClose();
+      setCurrentStep("eligibility");
     }
   };
 
@@ -363,7 +366,14 @@ const MigrationFlow: React.FC<MigrationFlowProps> = ({ isOpen, onClose }) => {
                 Try Again
               </button>
 
-              <button className="btn btn-outline" onClick={onClose}>
+              <button
+                type="button"
+                className="btn btn-outline"
+                onClick={() => {
+                  onClose();
+                  setCurrentStep("eligibility");
+                }}
+              >
                 Close
               </button>
             </div>

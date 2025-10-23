@@ -14,7 +14,6 @@ import { sepolia } from "viem/chains";
 import { youmioMainnet, youmioTestnet } from "../wagmi/chain";
 
 export const chains: Record<string, Chain> = {
-  youmioTestnet,
   youmioMainnet,
   youmioTestnet,
   sepolia,
