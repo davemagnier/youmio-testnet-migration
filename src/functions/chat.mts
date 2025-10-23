@@ -8,17 +8,17 @@ import { getBalance } from "../utils/contract/sbt.ts";
 import { sessionAuth } from "../utils/middlewares.ts";
 import { buildLimboSystemPrompt } from "../utils/prompt.ts";
 import { getCurrentEpoch } from "../utils/time.ts";
+import { youmioMainnet } from "../utils/chain.ts";
 
 const OPENAI_API_KEY = Netlify.env.get("OPENAI_API_KEY");
 const chatCooldownSeconds = parseInt(
 	Netlify.env.get("CHAT_COOLDOWN_SECONDS") || "86400",
 );
 const chatLimit = parseInt(Netlify.env.get("CHAT_LIMIT") || "15");
-const chainId = parseInt(Netlify.env.get("CHAIN_ID") || "68854");
-const SbtContractAddress = Netlify.env.get("SBT_CONTRACT") as Address;
-const rpcUrl =
-	Netlify.env.get("RPC_URL") ||
-	"https://subnets.avax.network/youtest/testnet/rpc";
+const mainnetChainId = youmioMainnet.id;
+const mainnetRpcUrl = youmioMainnet.rpcUrls.default.http[0] as string;
+
+const mainnetSbtContractAddress = Netlify.env.get("SBT_CONTRACT") as Address;
 
 if (!OPENAI_API_KEY) {
 	throw new Error("OPENAI_API_KEY not set");
@@ -66,9 +66,9 @@ app.post("/", async (c) => {
 
 	const balance = await getBalance(
 		session.walletAddress,
-		SbtContractAddress,
-		chainId,
-		rpcUrl,
+		mainnetSbtContractAddress,
+		mainnetChainId,
+		mainnetRpcUrl,
 	);
 	if (balance === 0n) {
 		return c.json({ error: "You need to mint Soulbound Badge" }, 400);

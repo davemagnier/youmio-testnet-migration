@@ -7,12 +7,11 @@ import { generateSessionId } from "../utils/hash.ts";
 import { generateSiweNonce } from "viem/siwe";
 import { getWalletData, setWalletData } from "../utils/allowlist-store.ts";
 import { getCurrentEpoch } from "../utils/time.ts";
+import { youmioMainnet } from "../wagmi/chain.ts";
 
-const chainId = parseInt(Netlify.env.get("CHAIN_ID") || "68854");
+const mainnetChainId = youmioMainnet.id;
+const mainnetRpcUrl = youmioMainnet.rpcUrls.default.http[0] as string;
 const domain = Netlify.env.get("DOMAIN");
-const rpcUrl =
-	Netlify.env.get("RPC_URL") ||
-	"https://subnets.avax.network/youtest/testnet/rpc";
 
 if (domain === undefined) {
 	throw new Error("One or more required environment variables are not set");
@@ -32,7 +31,7 @@ app.get("/message/:walletAddress", async (c) => {
 	return c.json({
 		authMessage: createAuthMessage(
 			walletAddress as Address,
-			chainId,
+			mainnetChainId,
 			domain,
 			uri,
 			generateSiweNonce(),
@@ -51,8 +50,8 @@ app.post("/session/:walletAddress", async (c) => {
 		walletAddress as Address,
 		message,
 		signature,
-		chainId,
-		rpcUrl,
+		mainnetChainId,
+		mainnetRpcUrl,
 	);
 	if (!valid) {
 		return c.json({ error: "Invalid signature" }, 401);

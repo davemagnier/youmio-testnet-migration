@@ -2,7 +2,7 @@ import { Config, Context } from "@netlify/functions";
 import { Hono } from "hono";
 
 const SbtImageUrl = Netlify.env.get("SBT_IMAGE_URL");
-const SbtName = Netlify.env.get("SBT_NAME") ?? "Youmio Testnet SBT";
+const SbtName = Netlify.env.get("SBT_NAME") ?? "Youmio SBT";
 const SbtDescription =
   Netlify.env.get("SBT_DESCRIPTION") ?? "Youmio Soulbound Token";
 

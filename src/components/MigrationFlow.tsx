@@ -130,7 +130,7 @@ const MigrationFlow: React.FC<MigrationFlowProps> = ({ isOpen, onClose }) => {
         setCurrentStep("mint");
       } else {
         setErrorMessage(
-          "You are not eligible for migration. You need to have a testnet SBT and no mainnet SBT.",
+          "You are not eligible for migration. You need to have a testnet SBT and no mainnet SBT."
         );
         setCurrentStep("error");
       }
