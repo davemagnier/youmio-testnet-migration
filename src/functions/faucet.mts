@@ -3,6 +3,7 @@ import { Hono } from "hono";
 import type { Address, Hex } from "viem";
 import {
   getWalletData,
+  initializeUser,
   setWalletData,
   type WalletData,
 } from "../utils/allowlist-store.ts";
@@ -145,9 +146,12 @@ app.get("/cooldown", sessionAuth, async (c) => {
     return c.json({ error: "Unauthorized" }, 401);
   }
 
-  const walletData: WalletData | undefined = await getWalletData(
+  let walletData: WalletData | undefined = await getWalletData(
     session.walletAddress,
   );
+  if (!walletData) {
+    walletData = await initializeUser(session.walletAddress);
+  }
   if (!walletData || !walletData.faucetEnabled) {
     return c.json({ error: "NOT_ALLOWLISTED" }, 401);
   }
