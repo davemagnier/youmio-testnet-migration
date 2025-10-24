@@ -1,5 +1,6 @@
 import { getStore } from "@netlify/blobs";
 import { Address } from "viem";
+import { getCurrentEpoch } from "./time";
 
 export type WalletData = {
 	lastClaimed?: number;
@@ -56,4 +57,20 @@ export async function getAllowlist() {
 	const walletStore = getWalletStore();
 
 	return walletStore.list();
+}
+
+export async function initializeUser(walletAddress: Address) {
+	const walletData = await getWalletData(walletAddress);
+
+	// Enable faucet by default
+	const data = {
+		lastMessageReset: walletData?.lastMessageReset ?? getCurrentEpoch(),
+		faucetEnabled: walletData?.faucetEnabled ?? true,
+		messageCount: walletData?.messageCount ?? 0,
+		lastClaimed: walletData?.lastClaimed,
+	}
+
+	await setWalletData(walletAddress, data);
+
+	return data
 }
