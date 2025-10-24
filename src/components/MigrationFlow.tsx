@@ -40,15 +40,17 @@ const MigrationFlow: React.FC<MigrationFlowProps> = ({ isOpen, onClose }) => {
     isPending: isConnecting,
     error: connectError,
   } = useConnect();
+
   const {
     writeContract,
     data: hash,
     isPending: isMinting,
     error: mintError,
   } = useWriteContract();
-  const { isSuccess: isConfirmed } = useWaitForTransactionReceipt({
-    hash,
-  });
+  const { isSuccess: isConfirmed, data: receipt } =
+    useWaitForTransactionReceipt({
+      hash,
+    });
 
   // Check testnet SBT balance
   const { data: testnetBalance, isLoading: isTestnetBalanceLoading } =
@@ -78,7 +80,7 @@ const MigrationFlow: React.FC<MigrationFlowProps> = ({ isOpen, onClose }) => {
     });
 
   // Check gas balance on mainnet
-  const { data: gasBalance, isLoading: isGasBalanceLoading } = useBalance({
+  const { data: gasBalance } = useBalance({
     address: address,
     chainId: youmioMainnet.id,
     query: {
@@ -210,7 +212,7 @@ const MigrationFlow: React.FC<MigrationFlowProps> = ({ isOpen, onClose }) => {
   useEffect(() => {
     if (isConfirmed && hash) {
       // TODO: Fetch the actual token ID after minting
-      setTokenId(1n);
+      setTokenId();
       setCurrentStep("success");
     }
 
@@ -360,9 +362,7 @@ const MigrationFlow: React.FC<MigrationFlowProps> = ({ isOpen, onClose }) => {
 
               <div className="sbt-card mainnet success half-size">
                 <img src="/mainnet-sbt.png" alt="Mainnet SBT" />
-                <div className="token-id">
-                  Token ID: {tokenId?.toString() || "..."}
-                </div>
+                <div className="token-id">Here's your Youmio SBT</div>
               </div>
 
               <button className="btn btn-primary" onClick={onClose}>
