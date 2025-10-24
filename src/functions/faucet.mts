@@ -111,7 +111,10 @@ app.post("/claim/process", upstashAuth, async (c) => {
     return c.json({ error: "Missing walletAddress" }, 400);
   }
 
-  const walletData: WalletData | undefined = await getWalletData(walletAddress);
+  let walletData = await getWalletData(walletAddress);
+  if (!walletData) {
+    walletData = await initializeUser(walletAddress);
+  }
   if (!walletData?.faucetEnabled) {
     return c.json({ error: "Wallet not in allowlist" }, 401);
   }
