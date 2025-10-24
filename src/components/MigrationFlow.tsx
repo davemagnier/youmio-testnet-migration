@@ -319,7 +319,7 @@ const MigrationFlow: React.FC<MigrationFlowProps> = ({ isOpen, onClose }) => {
               </div>
 
               {/* Only show Mint button if user has gas balance */}
-              {gasBalance?.value !== 0n && (
+              {gasBalance?.value !== 0n ? (
                 <button
                   className="btn btn-primary"
                   style={{ marginTop: "1rem" }}
@@ -335,6 +335,11 @@ const MigrationFlow: React.FC<MigrationFlowProps> = ({ isOpen, onClose }) => {
                     "Mint SBT"
                   )}
                 </button>
+              ) : (
+                <p>
+                  Make sure that you have claimed gas using the faucet at the
+                  top of the page.
+                </p>
               )}
 
               {signatureError && (
