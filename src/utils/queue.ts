@@ -1,7 +1,12 @@
 import { Client, Receiver } from "@upstash/qstash";
-const qstashUrl = Netlify.env.get("QSTASH_URL")
+const qstashUrl = Netlify.env.get("QSTASH_URL");
 
-export async function queueData(data: Record<string, any>, webhookUrl: string, qstashToken: string, queueName: string) {
+export async function queueData(
+  data: Record<string, any>,
+  webhookUrl: string,
+  qstashToken: string,
+  queueName: string,
+) {
   const client = new Client({
     baseUrl: qstashUrl,
     token: qstashToken,
@@ -13,11 +18,17 @@ export async function queueData(data: Record<string, any>, webhookUrl: string, q
     headers: {
       "Content-Type": "application/json",
     },
-    retries: 2
-  })
+    retries: 2,
+    contentBasedDeduplication: true,
+  });
 }
 
-export async function verifyQstashCall(signature: string, body: string, currentSigningKey: string, nextSigningKey: string) {
+export async function verifyQstashCall(
+  signature: string,
+  body: string,
+  currentSigningKey: string,
+  nextSigningKey: string,
+) {
   const r = new Receiver({
     currentSigningKey,
     nextSigningKey,
@@ -26,5 +37,6 @@ export async function verifyQstashCall(signature: string, body: string, currentS
   return await r.verify({
     signature,
     body,
-  })
+  });
 }
+
