@@ -62,6 +62,7 @@ app.post("/claim", sessionAuth, async (c) => {
     walletData = await initializeUser(session.walletAddress);
   }
   if (!walletData?.faucetEnabled) {
+    console.log(`Not allowlisted \n${JSON.stringify(walletData, null, 2)}`);
     return c.json({ error: "NOT_ALLOWLISTED" }, 401);
   }
 
@@ -72,6 +73,7 @@ app.post("/claim", sessionAuth, async (c) => {
     testnetRpcUrl,
   );
   if (testnetBalance === 0n) {
+    console.log(`No SBT owned: ${session.walletAddress}`);
     return c.json({ error: "You must own a testnet SBT to claim" }, 401);
   }
 

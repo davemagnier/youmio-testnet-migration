@@ -347,8 +347,9 @@ const MigrationFlow: React.FC<MigrationFlowProps> = ({ isOpen, onClose }) => {
                 </button>
               ) : (
                 <p>
-                  Make sure that you have claimed gas using the faucet at the
-                  top of the page.
+                  If you can see this message you don't have gas yet, when the
+                  gas lands (claim at the top of mainpage) a migrate button will
+                  appear here! The faucet has a que please give it time
                 </p>
               )}
 
