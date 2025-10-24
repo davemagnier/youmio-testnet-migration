@@ -193,6 +193,10 @@ const MainnetPage: React.FC = () => {
                   Migrate your Testnet participation badge to Mainnet now and
                   secure your position for maximum opportunities.
                 </p>
+                <p>
+                  You'll need to claim some gas first from the faucet above
+                  (might take some time to credit)
+                </p>
               </div>
 
               <div className="arrow-container">
