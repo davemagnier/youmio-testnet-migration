@@ -187,7 +187,10 @@ const MainnetPage: React.FC = () => {
             </div>
 
             <div className="migration-center">
-              <div className="migration-header" style={{display: "flex" gap: "1.5rem"}}>
+              <div
+                className="migration-header"
+                style={{ display: "flex", gap: "1.5rem" }}
+              >
                 <h3>Complete Your Testnet Journey</h3>
                 <p>
                   Migrate your Testnet participation badge to Mainnet now and
