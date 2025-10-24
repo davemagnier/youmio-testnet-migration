@@ -158,8 +158,8 @@ const MainnetPage: React.FC = () => {
 
         {/* Hero Section */}
         <div className="hero">
-          <div className="phase-badge">PHASE 1 COMPLETE ✓</div>
-          <h1>Youmio Chain Mainnet</h1>
+          <div className="phase-badge">TESTNET COMPLETE ✓</div>
+          <h1>Youmio Chain Testnet</h1>
           <p className="subtitle">
             A milestone achieved by our incredible community
           </p>
@@ -187,7 +187,7 @@ const MainnetPage: React.FC = () => {
             </div>
 
             <div className="migration-center">
-              <div className="migration-header">
+              <div className="migration-header" style={{display: "flex" gap: "1.5rem"}}>
                 <h3>Complete Your Testnet Journey</h3>
                 <p>
                   Migrate your Testnet participation badge to Mainnet now and
