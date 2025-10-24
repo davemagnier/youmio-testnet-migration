@@ -189,7 +189,11 @@ const MainnetPage: React.FC = () => {
             <div className="migration-center">
               <div
                 className="migration-header"
-                style={{ display: "flex", gap: "1.5rem" }}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "1.5rem",
+                }}
               >
                 <h3>Complete Your Testnet Journey</h3>
                 <p>
