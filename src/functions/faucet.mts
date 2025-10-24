@@ -57,7 +57,10 @@ app.post("/claim", sessionAuth, async (c) => {
     return c.json({ error: "Unauthorized" }, 401);
   }
 
-  const walletData = await getWalletData(session.walletAddress);
+  let walletData = await getWalletData(session.walletAddress);
+  if (!walletData) {
+    walletData = await initializeUser(session.walletAddress);
+  }
   if (!walletData?.faucetEnabled) {
     return c.json({ error: "NOT_ALLOWLISTED" }, 401);
   }
