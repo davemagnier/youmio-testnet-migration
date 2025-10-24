@@ -134,12 +134,15 @@ const GasBalanceChecker: React.FC<GasBalanceCheckerProps> = ({
   // For compact variant, only show the button without any text
   if (variant === "compact") {
     return (
-      <div className="gas-balance-checker compact">
+      <>
         {isBalanceLoading ? (
           <div className="loading-spinner"></div>
         ) : hasZeroBalance && showClaimButton ? (
           <button
             className="btn btn-primary claim-gas-btn compact"
+            style={{
+              padding: "0.75rem 1.25rem",
+            }}
             onClick={handleClaimGas}
             disabled={disabled || isClaiming || isCooldownLoading || !canClaim}
             title="Claim gas for transactions"
@@ -157,12 +160,12 @@ const GasBalanceChecker: React.FC<GasBalanceCheckerProps> = ({
             )}
           </button>
         ) : null}
-      </div>
+      </>
     );
   }
 
   return (
-    <div className="gas-balance-checker">
+    <>
       {isBalanceLoading ? (
         <div className="loading-spinner"></div>
       ) : hasZeroBalance ? (
@@ -176,7 +179,7 @@ const GasBalanceChecker: React.FC<GasBalanceCheckerProps> = ({
 
           {showClaimButton && (
             <button
-              className="btn btn-primary claim-gas-btn"
+              className="btn btn-primary wallet-connect-btn"
               onClick={handleClaimGas}
               disabled={
                 disabled || isClaiming || isCooldownLoading || !canClaim
@@ -200,9 +203,8 @@ const GasBalanceChecker: React.FC<GasBalanceCheckerProps> = ({
           )}
         </div>
       ) : null}
-    </div>
+    </>
   );
 };
 
 export default GasBalanceChecker;
-
