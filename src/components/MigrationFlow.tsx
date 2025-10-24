@@ -13,7 +13,6 @@ import { useQuery } from "@tanstack/react-query";
 import { youmioMainnet, youmioTestnet } from "../wagmi/chain";
 import { youmioSbtAbi } from "../utils/contract/abis/youmioSbt";
 import { useAuth } from "../contexts/auth-context";
-import GasBalanceChecker from "./GasBalanceChecker";
 import "./pages/mainnet.css";
 import { toast } from "react-toastify";
 // Define TypeScript interfaces
@@ -318,11 +317,6 @@ const MigrationFlow: React.FC<MigrationFlowProps> = ({ isOpen, onClose }) => {
               <div className="sbt-card mainnet half-size">
                 <img src="/mainnet-sbt.png" alt="Mainnet SBT" />
               </div>
-
-              <GasBalanceChecker showClaimButton={true} showWarning={true} onClaimSuccess={() => {
-                // Refetch signature after successful gas claim
-                // This will trigger a refetch of the signature query
-              }} />
 
               {/* Only show Mint button if user has gas balance */}
               {gasBalance?.value !== 0n && (

@@ -114,6 +114,7 @@ const MainnetPage: React.FC = () => {
             style={{
               display: "flex",
               gap: "1rem",
+              height: "75%",
             }}
           >
             {isConnected && (
