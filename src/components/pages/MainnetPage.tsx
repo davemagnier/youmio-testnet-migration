@@ -2,6 +2,7 @@ import type React from "react";
 import { useState, useEffect } from "react";
 import WalletConnect from "../WalletConnectModal.tsx";
 import MigrationFlow from "../MigrationFlow.tsx";
+import GasBalanceChecker from "../GasBalanceChecker";
 import { useAccount, useDisconnect } from "wagmi";
 import "./mainnet.css";
 
@@ -109,23 +110,37 @@ const MainnetPage: React.FC = () => {
           <div className="logo">
             <img src="/youmio-logo.png" alt="Youmio" />
           </div>
-          <button
-            className="wallet-connect-btn"
-            onClick={() =>
-              isConnected ? disconnect() : setWalletModalOpen(true)
-            }
+          <div
+            style={{
+              display: "flex",
+              gap: "1rem",
+            }}
           >
-            {isConnected ? (
-              <span className="wallet-btn-content">
-                <span className="wallet-address">
-                  {truncateAddress(address)}
-                </span>
-                <span className="wallet-disconnect-text">Disconnect</span>
-              </span>
-            ) : (
-              "Connect Wallet"
+            {isConnected && (
+              <GasBalanceChecker
+                variant="compact"
+                showClaimButton={true}
+                showWarning={false}
+              />
             )}
-          </button>
+            <button
+              className="wallet-connect-btn"
+              onClick={() =>
+                isConnected ? disconnect() : setWalletModalOpen(true)
+              }
+            >
+              {isConnected ? (
+                <span className="wallet-btn-content">
+                  <span className="wallet-address">
+                    {truncateAddress(address)}
+                  </span>
+                  <span className="wallet-disconnect-text">Disconnect</span>
+                </span>
+              ) : (
+                "Connect Wallet"
+              )}
+            </button>
+          </div>
         </div>
       </div>
 

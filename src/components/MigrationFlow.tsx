@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   useAccount,
+  useBalance,
   useConnect,
   useReadContract,
   useWriteContract,
@@ -12,6 +13,7 @@ import { useQuery } from "@tanstack/react-query";
 import { youmioMainnet, youmioTestnet } from "../wagmi/chain";
 import { youmioSbtAbi } from "../utils/contract/abis/youmioSbt";
 import { useAuth } from "../contexts/auth-context";
+import GasBalanceChecker from "./GasBalanceChecker";
 import "./pages/mainnet.css";
 import { toast } from "react-toastify";
 // Define TypeScript interfaces
@@ -75,6 +77,15 @@ const MigrationFlow: React.FC<MigrationFlowProps> = ({ isOpen, onClose }) => {
         enabled: isConnected && currentStep !== "connect",
       },
     });
+
+  // Check gas balance on mainnet
+  const { data: gasBalance, isLoading: isGasBalanceLoading } = useBalance({
+    address: address,
+    chainId: youmioMainnet.id,
+    query: {
+      enabled: isConnected && currentStep !== "connect",
+    },
+  });
 
   // Fetch signature for minting
   const {
@@ -308,21 +319,29 @@ const MigrationFlow: React.FC<MigrationFlowProps> = ({ isOpen, onClose }) => {
                 <img src="/mainnet-sbt.png" alt="Mainnet SBT" />
               </div>
 
-              <button
-                className="btn btn-primary"
-                style={{ marginTop: "1rem" }}
-                onClick={handleMint}
-                disabled={isMinting || isSignatureLoading}
-              >
-                {isMinting || isSignatureLoading ? (
-                  <>
-                    <span className="loading-spinner"></span>
-                    Processing...
-                  </>
-                ) : (
-                  "Mint SBT"
-                )}
-              </button>
+              <GasBalanceChecker showClaimButton={true} showWarning={true} onClaimSuccess={() => {
+                // Refetch signature after successful gas claim
+                // This will trigger a refetch of the signature query
+              }} />
+
+              {/* Only show Mint button if user has gas balance */}
+              {gasBalance?.value !== 0n && (
+                <button
+                  className="btn btn-primary"
+                  style={{ marginTop: "1rem" }}
+                  onClick={handleMint}
+                  disabled={isMinting || isSignatureLoading}
+                >
+                  {isMinting || isSignatureLoading ? (
+                    <>
+                      <span className="loading-spinner"></span>
+                      Processing...
+                    </>
+                  ) : (
+                    "Mint SBT"
+                  )}
+                </button>
+              )}
 
               {signatureError && (
                 <div className="error-message">
