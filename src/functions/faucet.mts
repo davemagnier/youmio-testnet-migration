@@ -33,9 +33,9 @@ const faucetCooldownSeconds = parseInt(
   Netlify.env.get("FAUCET_COOLDOWN_SECONDS") || "86400",
 );
 
-const qstashToken = Netlify.env.get("QSTASH_TOKEN")
-const queueName = Netlify.env.get("QSTASH_QUEUE_NAME")
-const faucetWebhookUrl = Netlify.env.get("FAUCET_WEBHOOK_URL")
+const qstashToken = Netlify.env.get("QSTASH_TOKEN");
+const queueName = Netlify.env.get("QSTASH_QUEUE_NAME");
+const faucetWebhookUrl = Netlify.env.get("FAUCET_WEBHOOK_URL");
 
 if (!qstashToken || !faucetWebhookUrl || !queueName) {
   throw new Error("Missing Qstash environment");
@@ -82,9 +82,14 @@ app.post("/claim", sessionAuth, async (c) => {
     }
   }
 
-  await queueData({
-    walletAddress: session.walletAddress,
-  }, faucetWebhookUrl, qstashToken, queueName);
+  await queueData(
+    {
+      walletAddress: session.walletAddress,
+    },
+    faucetWebhookUrl,
+    qstashToken,
+    queueName,
+  );
 
   await setWalletData(session.walletAddress, {
     ...walletData,
@@ -100,9 +105,7 @@ app.post("/claim/process", upstashAuth, async (c) => {
     return c.json({ error: "Missing walletAddress" }, 400);
   }
 
-  const walletData: WalletData | undefined = await getWalletData(
-    walletAddress
-  );
+  const walletData: WalletData | undefined = await getWalletData(walletAddress);
   if (!walletData?.faucetEnabled) {
     return c.json({ error: "Wallet not in allowlist" }, 401);
   }
@@ -116,13 +119,19 @@ app.post("/claim/process", upstashAuth, async (c) => {
       faucetPrivateKey,
       rpcUrl: mainnetRpcUrl,
     });
+    // NOTE: Disabling after successful claim once
+    await setWalletData(walletAddress, {
+      ...walletData,
+      faucetEnabled: false,
+      lastClaimed: getCurrentEpoch() - faucetCooldownSeconds,
+    });
   } catch (error) {
     // NOTE: Reset cooldown in case of error
     await setWalletData(walletAddress, {
       ...walletData,
       lastClaimed: getCurrentEpoch() - faucetCooldownSeconds,
     });
-    console.log({ error })
+    console.log({ error });
 
     return c.json({ error: "Unable to mint native token" }, 500);
   }
