@@ -15,6 +15,7 @@ import { youmioSbtAbi } from "../utils/contract/abis/youmioSbt";
 import { useAuth } from "../contexts/auth-context";
 import "./pages/mainnet.css";
 import { toast } from "react-toastify";
+import { Address } from "viem";
 // Define TypeScript interfaces
 interface MigrationFlowProps {
   isOpen: boolean;
@@ -25,7 +26,6 @@ type MigrationStep = "connect" | "eligibility" | "mint" | "success" | "error";
 
 const MigrationFlow: React.FC<MigrationFlowProps> = ({ isOpen, onClose }) => {
   const [errorMessage, setErrorMessage] = useState("");
-  const [tokenId, setTokenId] = useState<bigint | null>(null);
 
   const { address, isConnected } = useAccount();
   const [currentStep, setCurrentStep] = useState<MigrationStep>(
@@ -51,6 +51,14 @@ const MigrationFlow: React.FC<MigrationFlowProps> = ({ isOpen, onClose }) => {
     useWaitForTransactionReceipt({
       hash,
     });
+
+  const { data: tokenId } = useReadContract({
+    chainId: youmioMainnet.id,
+    address: import.meta.env.VITE_SBT_CONTRACT_ADDRESS as Address,
+    abi: youmioSbtAbi,
+    functionName: "walletStore",
+    args: [address!],
+  });
 
   // Check testnet SBT balance
   const { data: testnetBalance, isLoading: isTestnetBalanceLoading } =
@@ -212,7 +220,7 @@ const MigrationFlow: React.FC<MigrationFlowProps> = ({ isOpen, onClose }) => {
   useEffect(() => {
     if (isConfirmed && hash) {
       // TODO: Fetch the actual token ID after minting
-      setTokenId();
+      setTokenId(receipt.logs);
       setCurrentStep("success");
     }
 
@@ -362,7 +370,7 @@ const MigrationFlow: React.FC<MigrationFlowProps> = ({ isOpen, onClose }) => {
 
               <div className="sbt-card mainnet success half-size">
                 <img src="/mainnet-sbt.png" alt="Mainnet SBT" />
-                <div className="token-id">Here's your Youmio SBT</div>
+                <div className="token-id">Token ID: {tokenId}</div>
               </div>
 
               <button className="btn btn-primary" onClick={onClose}>
