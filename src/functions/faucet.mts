@@ -1,19 +1,27 @@
-import { Config, Context } from "@netlify/functions";
+import type { Config, Context } from "@netlify/functions";
 import { Hono } from "hono";
-import { Address, Hex } from "viem";
+import type { Address, Hex } from "viem";
 import {
   getWalletData,
   setWalletData,
-  WalletData,
+  type WalletData,
 } from "../utils/allowlist-store.ts";
-import { SessionData } from "../utils/auth-store.ts";
+import type { SessionData } from "../utils/auth-store.ts";
 import { mintNativeCoin } from "../utils/faucet.ts";
-import { sessionAuth } from "../utils/middlewares.ts";
+import { sessionAuth, upstashAuth } from "../utils/middlewares.ts";
 import { getCurrentEpoch } from "../utils/time.ts";
-import { youmioMainnet } from "../wagmi/chain.ts";
+import { queueData } from "../utils/queue.ts";
+import { youmioMainnet, youmioTestnet } from "../wagmi/chain.ts";
+import { getBalance } from "../utils/contract/sbt.ts";
 
 const mainnetChainId = youmioMainnet.id;
 const mainnetRpcUrl = youmioMainnet.rpcUrls.default.http[0] as string;
+
+const testnetChainId = youmioTestnet.id;
+const testnetSbtContractAddress = Netlify.env.get(
+  "TESTNET_SBT_CONTRACT",
+) as Address;
+const testnetRpcUrl = youmioTestnet.rpcUrls.default.http[0] as string;
 
 const faucetAddress = Netlify.env.get("FAUCET_CONTRACT") as Address;
 const faucetPrivateKey = Netlify.env.get("FAUCET_PRIVATE_KEY") as Hex;
@@ -25,6 +33,13 @@ const faucetCooldownSeconds = parseInt(
   Netlify.env.get("FAUCET_COOLDOWN_SECONDS") || "86400",
 );
 
+const qstashToken = Netlify.env.get("QSTASH_TOKEN")
+const queueName = Netlify.env.get("QSTASH_QUEUE_NAME")
+const faucetWebhookUrl = Netlify.env.get("FAUCET_WEBHOOK_URL")
+
+if (!qstashToken || !faucetWebhookUrl || !queueName) {
+  throw new Error("Missing Qstash environment");
+}
 if (!faucetAddress || !faucetPrivateKey) {
   throw new Error("One or more required environment variables are not set");
 }
@@ -33,11 +48,9 @@ type Variables = {
   session: SessionData | undefined;
 };
 
-const app = new Hono<{ Variables: Variables }>()
-  .basePath("/api/v1/faucet")
-  .use("*", sessionAuth);
+const app = new Hono<{ Variables: Variables }>().basePath("/api/v1/faucet");
 
-app.post("/claim", async (c) => {
+app.post("/claim", sessionAuth, async (c) => {
   const session = c.get("session");
   if (!session) {
     return c.json({ error: "Unauthorized" }, 401);
@@ -46,6 +59,16 @@ app.post("/claim", async (c) => {
   const walletData = await getWalletData(session.walletAddress);
   if (!walletData?.faucetEnabled) {
     return c.json({ error: "NOT_ALLOWLISTED" }, 401);
+  }
+
+  const testnetBalance = await getBalance(
+    session.walletAddress,
+    testnetSbtContractAddress,
+    testnetChainId,
+    testnetRpcUrl,
+  );
+  if (testnetBalance === 0n) {
+    return c.json({ error: "You must own a testnet SBT to claim" }, 401);
   }
 
   if (walletData.lastClaimed !== undefined) {
@@ -59,18 +82,9 @@ app.post("/claim", async (c) => {
     }
   }
 
-  const success = await mintNativeCoin({
+  await queueData({
     walletAddress: session.walletAddress,
-    amount: faucetAmount,
-    chainId: mainnetChainId,
-    faucetAddress,
-    faucetPrivateKey,
-    rpcUrl: mainnetRpcUrl,
-  });
-
-  if (!success) {
-    return c.json({ error: "Failed to mint native coin" }, 500);
-  }
+  }, faucetWebhookUrl, qstashToken, queueName);
 
   await setWalletData(session.walletAddress, {
     ...walletData,
@@ -80,7 +94,43 @@ app.post("/claim", async (c) => {
   return c.json({ nextClaimIn: faucetCooldownSeconds });
 });
 
-app.get("/cooldown", async (c) => {
+app.post("/claim/process", upstashAuth, async (c) => {
+  const { walletAddress } = await c.req.json();
+  if (!walletAddress) {
+    return c.json({ error: "Missing walletAddress" }, 400);
+  }
+
+  const walletData: WalletData | undefined = await getWalletData(
+    walletAddress
+  );
+  if (!walletData?.faucetEnabled) {
+    return c.json({ error: "Wallet not in allowlist" }, 401);
+  }
+
+  try {
+    await mintNativeCoin({
+      walletAddress,
+      amount: faucetAmount,
+      chainId: mainnetChainId,
+      faucetAddress,
+      faucetPrivateKey,
+      rpcUrl: mainnetRpcUrl,
+    });
+  } catch (error) {
+    // NOTE: Reset cooldown in case of error
+    await setWalletData(walletAddress, {
+      ...walletData,
+      lastClaimed: getCurrentEpoch() - faucetCooldownSeconds,
+    });
+    console.log({ error })
+
+    return c.json({ error: "Unable to mint native token" }, 500);
+  }
+
+  return c.json({ success: true });
+});
+
+app.get("/cooldown", sessionAuth, async (c) => {
   const session = c.get("session");
   if (!session) {
     return c.json({ error: "Unauthorized" }, 401);
@@ -91,6 +141,16 @@ app.get("/cooldown", async (c) => {
   );
   if (!walletData || !walletData.faucetEnabled) {
     return c.json({ error: "NOT_ALLOWLISTED" }, 401);
+  }
+
+  const testnetBalance = await getBalance(
+    session.walletAddress,
+    testnetSbtContractAddress,
+    testnetChainId,
+    testnetRpcUrl,
+  );
+  if (testnetBalance === 0n) {
+    return c.json({ error: "You must own a testnet SBT to claim" }, 401);
   }
 
   const remainingCooldown = walletData.lastClaimed
