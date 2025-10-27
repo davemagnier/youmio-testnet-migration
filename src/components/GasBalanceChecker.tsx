@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { useBalance, useAccount } from "wagmi";
+import { useBalance, useAccount, useReadContract } from "wagmi";
 import { useQuery } from "@tanstack/react-query";
-import { youmioMainnet } from "../wagmi/chain";
+import { youmio, youmioMainnet } from "../wagmi/chain";
 import { toast } from "react-toastify";
 import { useAuth } from "../contexts/auth-context";
 import "./pages/mainnet.css";
+import { youmioSbtAbi } from "../utils/contract/abis/youmioSbt";
 
 interface GasBalanceCheckerProps {
   onClaimSuccess?: () => void;
@@ -34,6 +35,17 @@ const GasBalanceChecker: React.FC<GasBalanceCheckerProps> = ({
     chainId: youmioMainnet.id,
     query: {
       enabled: isConnected && !!address,
+    },
+  });
+
+  const { data: sbtBalance } = useReadContract({
+    chainId: youmio.id,
+    address: import.meta.env.VITE_SBT_CONTRACT_ADDRESS as `0x${string}`,
+    abi: youmioSbtAbi,
+    functionName: "balanceOf",
+    args: [address!],
+    query: {
+      enabled: Boolean(address),
     },
   });
 
@@ -135,7 +147,7 @@ const GasBalanceChecker: React.FC<GasBalanceCheckerProps> = ({
   if (variant === "compact") {
     return (
       <>
-        {isBalanceLoading ? (
+        {sbtBalance !== 0n ? null : isBalanceLoading ? (
           <div className="loading-spinner"></div>
         ) : hasZeroBalance && showClaimButton ? (
           <button
@@ -190,10 +202,6 @@ const GasBalanceChecker: React.FC<GasBalanceCheckerProps> = ({
                   <span className="loading-spinner"></span>
                   Claiming Gas...
                 </>
-              ) : isCooldownLoading ? (
-                "Checking cooldown..."
-              ) : !canClaim && cooldownData?.nextClaimIn > 0 ? (
-                `Claim available in ${cooldownData.nextClaimIn} seconds`
               ) : disabled ? (
                 "Not Eligible"
               ) : (

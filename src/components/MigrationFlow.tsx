@@ -182,6 +182,8 @@ const MigrationFlow: React.FC<MigrationFlowProps> = ({ isOpen, onClose }) => {
 
       if (isEligible) {
         setCurrentStep("mint");
+      } else if (mainnetBalance === 1n) {
+        setCurrentStep("success");
       } else {
         setErrorMessage(
           "You are not eligible for migration. You need to have a testnet SBT and no mainnet SBT.",
@@ -218,9 +220,11 @@ const MigrationFlow: React.FC<MigrationFlowProps> = ({ isOpen, onClose }) => {
 
   // Handle transaction confirmation
   useEffect(() => {
-    if (isConfirmed && hash) {
+    if (
+      (mainnetBalance !== undefined && mainnetBalance !== 0n) ||
+      (isConfirmed && hash)
+    ) {
       // TODO: Fetch the actual token ID after minting
-      setTokenId(receipt.logs);
       setCurrentStep("success");
     }
 
@@ -234,7 +238,7 @@ const MigrationFlow: React.FC<MigrationFlowProps> = ({ isOpen, onClose }) => {
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
       onClose();
-      setCurrentStep("eligibility");
+      if (currentStep !== "success") setCurrentStep("eligibility");
     }
   };
 
@@ -363,7 +367,10 @@ const MigrationFlow: React.FC<MigrationFlowProps> = ({ isOpen, onClose }) => {
 
           {/* Step 4: Success */}
           {currentStep === "success" && (
-            <div className="migration-step success-step">
+            <div
+              className="migration-step success-step"
+              style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+            >
               <h3>Migration Successful!</h3>
               <p className="modal-description">
                 Congratulations! Your mainnet SBT has been minted successfully.
