@@ -142,7 +142,7 @@ app.post("/claim/process", upstashAuth, async (c) => {
     });
     console.log({ error });
 
-    return c.json({ error: "Unable to mint native token" }, 500);
+    return c.json({ error: "Unable to mint native token" });
   }
 
   return c.json({ success: true });
