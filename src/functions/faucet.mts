@@ -116,7 +116,7 @@ app.post("/claim/process", upstashAuth, async (c) => {
     walletData = await initializeUser(walletAddress);
   }
   if (!walletData?.faucetEnabled) {
-    return c.json({ error: "Wallet not in allowlist" }, 401);
+    return c.json({ error: "Wallet not in allowlist" });
   }
 
   try {
@@ -132,7 +132,7 @@ app.post("/claim/process", upstashAuth, async (c) => {
     await setWalletData(walletAddress, {
       ...walletData,
       faucetEnabled: false,
-      lastClaimed: getCurrentEpoch() - faucetCooldownSeconds,
+      lastClaimed: getCurrentEpoch(),
     });
   } catch (error) {
     // NOTE: Reset cooldown in case of error
