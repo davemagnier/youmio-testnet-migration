@@ -13,6 +13,7 @@ import { encryptMessage, setMessageData } from "../utils/message-store.ts";
 import { getBalance, getTokenOwner } from "../utils/contract/sbt.ts";
 import { getCurrentEpoch } from "../utils/time.ts";
 import { youmioMainnet, youmioTestnet } from "../wagmi/chain.ts";
+import { error } from "console";
 
 // Mainnet configuration
 const mainnetChainId = youmioMainnet.id;
@@ -103,6 +104,7 @@ app.get("/take", async (c) => {
 });
 
 app.get("/mint", async (c) => {
+  return c.json({ error: "Not found" }, 404);
   const session = c.get("session");
   if (!session) {
     return c.json({ error: "Unauthorized" }, 401);
